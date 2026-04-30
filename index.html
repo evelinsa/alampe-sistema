@@ -11,8 +11,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/763/763699.png">
     
-    <!-- Manifesto PWA -->
-    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Alampe%20ERP%20Pro%22,%22short_name%22:%22Alampe%22,%22start_url%22:%22/index.html%22,%22display%22:%22standalone%22,%22background_color%22:%22%23f1f5f9%22,%22theme_color%22:%22%230f172a%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/763/763699.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+    <!-- Manifesto PWA - Ajustado para evitar erro 404 no GitHub Pages -->
+    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Alampe%20ERP%20Pro%22,%22short_name%22:%22Alampe%22,%22start_url%22:%22index.html%22,%22display%22:%22standalone%22,%22background_color%22:%22%23f1f5f9%22,%22theme_color%22:%22%230f172a%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/763/763699.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -25,7 +25,7 @@
         
         /* Camadas de Visibilidade */
         #loginScreen { position: fixed; inset: 0; background: #0f172a; z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        #appScreen { display: none; } /* Escondido por padrão */
+        #appScreen { display: none; } 
 
         .erp-card { background: white; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.3s ease; }
         input, select, textarea { text-transform: uppercase; transition: all 0.2s; font-size: 0.85rem; }
@@ -60,12 +60,12 @@
         }
     </style>
 </head>
-<body class="font-bold">
+<body class="font-bold text-slate-900">
 
 <!-- TELA DE LOGIN EXCLUSIVA -->
 <div id="loginScreen">
     <div class="bg-white p-12 rounded-[3rem] shadow-2xl w-full max-w-md text-center border-t-8 border-yellow-400">
-        <div class="w-24 h-24 bg-yellow-400 rounded-3xl flex items-center justify-center mx-auto mb-8 text-4xl font-black shadow-xl text-slate-900">A</div>
+        <div class="w-24 h-24 bg-yellow-400 rounded-3xl flex items-center justify-center mx-auto mb-8 text-4xl font-black shadow-xl text-slate-900 font-black">A</div>
         <h2 class="text-2xl font-black uppercase italic tracking-tighter mb-2 text-slate-900">ALAMPE ERP</h2>
         <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-8">Comércio de Peças - Acesso Restrito</p>
         <input id="inputNomeLogin" placeholder="DIGITE SEU NOME" class="w-full p-6 border-2 border-slate-100 rounded-3xl mb-6 font-black text-center text-xl focus:border-yellow-400 outline-none uppercase text-slate-900">
@@ -105,68 +105,68 @@
         <div id="homeDashboard" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-bold">
             <div onclick="window.verCatalogoCompleto()" class="dash-card">
                 <div class="dash-icon bg-green-100 text-green-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg></div>
-                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">ESTOQUE COMPLETO</h3><p class="text-xs text-slate-400 font-bold uppercase">Ver todas as peças</p></div>
+                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">ESTOQUE COMPLETO</h3><p class="text-xs text-slate-400 font-bold uppercase font-bold">Ver todas as peças</p></div>
             </div>
             <div onclick="window.abrirOrcamento()" class="dash-card">
-                <div class="dash-icon bg-blue-100 text-blue-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
-                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">NOVO ORÇAMENTO</h3><p class="text-xs text-slate-400 font-bold uppercase">Gerar pedido</p></div>
+                <div class="dash-icon bg-blue-100 text-blue-600 font-bold font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+                <div class="text-center font-bold text-slate-900 font-bold"><h3 class="font-black text-lg">NOVO ORÇAMENTO</h3><p class="text-xs text-slate-400 font-bold uppercase font-bold">Gerar pedido</p></div>
             </div>
             <div onclick="window.abrirSucata()" class="dash-card">
-                <div class="dash-icon bg-red-100 text-red-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></div>
-                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">ENTRADA SUCATA</h3><p class="text-xs text-slate-400 font-bold uppercase">Cadastrar desmonte</p></div>
+                <div class="dash-icon bg-red-100 text-red-600 font-bold font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></div>
+                <div class="text-center font-bold text-slate-900 font-bold"><h3 class="font-black text-lg">ENTRADA SUCATA</h3><p class="text-xs text-slate-400 font-bold uppercase font-bold">Cadastrar desmonte</p></div>
             </div>
             <div onclick="window.abrirHistorico()" class="dash-card">
-                <div class="dash-icon bg-slate-100 text-slate-600"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">HISTÓRICO</h3><p class="text-xs text-slate-400 font-bold uppercase">Vendas realizadas</p></div>
+                <div class="dash-icon bg-slate-100 text-slate-600 font-bold font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                <div class="text-center font-bold text-slate-900 font-bold"><h3 class="font-black text-lg">HISTÓRICO</h3><p class="text-xs text-slate-400 font-bold uppercase font-bold">Vendas realizadas</p></div>
             </div>
             <div onclick="window.abrirCadastro()" class="dash-card">
-                <div class="dash-icon bg-yellow-100 text-yellow-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg></div>
-                <div class="text-center font-bold text-slate-900 font-black"><h3 class="font-black text-lg">CADASTRAR ITEM</h3><p class="text-xs text-slate-400 font-bold uppercase font-bold">Peça avulsa</p></div>
+                <div class="dash-icon bg-yellow-100 text-yellow-600 font-bold font-bold font-bold font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg></div>
+                <div class="text-center font-bold text-slate-900 font-bold"><h3 class="font-black text-lg">CADASTRAR ITEM</h3><p class="text-xs text-slate-400 font-bold uppercase font-bold font-bold">Peça avulsa</p></div>
             </div>
-            <div onclick="window.limparEstoqueCompleto()" class="dash-card">
-                <div class="dash-icon bg-orange-100 text-orange-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
-                <div class="text-center font-bold text-slate-900 font-black"><h3 class="font-black text-lg">LIMPAR TUDO</h3><p class="text-xs text-slate-400 font-bold uppercase font-bold">Zerar estoque</p></div>
+            <div onclick="window.limparEstoqueCompleto()" class="dash-card font-bold">
+                <div class="dash-icon bg-orange-100 text-orange-600 font-bold font-bold font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
+                <div class="text-center font-bold text-slate-900 font-bold"><h3 class="font-black text-lg">LIMPAR TUDO</h3><p class="text-xs text-slate-400 font-bold uppercase font-bold font-bold">Zerar estoque</p></div>
             </div>
         </div>
 
         <!-- ÁREA DE RESULTADOS -->
-        <div id="resultsArea" class="hidden font-bold">
+        <div id="resultsArea" class="hidden font-bold font-bold">
             <div class="flex justify-between items-center mb-4 text-slate-900 font-bold">
                 <h2 class="text-xl font-black uppercase italic">Peças Localizadas</h2>
-                <button onclick="document.getElementById('busca').value=''; window.mostrandoCatalogo=false; window.render()" class="text-blue-600 text-xs font-black uppercase font-black">← Voltar ao Painel</button>
+                <button onclick="document.getElementById('busca').value=''; window.mostrandoCatalogo=false; window.render()" class="text-blue-600 text-xs font-black uppercase font-black font-black">← Voltar ao Painel</button>
             </div>
-            <div class="erp-card overflow-hidden shadow-xl font-bold">
+            <div class="erp-card overflow-hidden shadow-xl font-bold font-bold">
                 <table class="w-full text-sm text-left border-collapse text-slate-900 font-bold">
-                    <thead class="bg-slate-100 text-slate-500 font-black text-[10px] uppercase border-b">
+                    <thead class="bg-slate-100 text-slate-500 font-black text-[10px] uppercase border-b text-slate-900">
                         <tr><th class="p-5 text-slate-900">Peça</th><th class="p-5 text-slate-900">Aplicação</th><th class="p-5 text-center text-slate-900">Lado/Pos.</th><th class="p-5 text-center text-slate-900">Cor</th><th class="p-5 text-center text-slate-900">Valor</th><th class="p-5 text-center text-slate-900">Estoque</th><th class="p-5 text-right text-slate-900">Ações</th></tr>
                     </thead>
-                    <tbody id="tabela" class="divide-y divide-slate-100 text-slate-900"></tbody>
+                    <tbody id="tabela" class="divide-y divide-slate-100 text-slate-900 font-bold"></tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-<!-- CHAT (FORA DA ÁREA DE APP PARA FLUTUAR SEMPRE) -->
-<div id="painelChat" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white shadow-2xl flex flex-col border-l border-slate-200 text-slate-900">
+<!-- CHAT -->
+<div id="painelChat" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white shadow-2xl flex flex-col border-l border-slate-200 text-slate-900 font-bold">
     <div class="bg-indigo-600 p-6 text-white flex justify-between items-center text-white">
         <div><h3 class="font-black uppercase italic tracking-tighter text-xl">Chat Interno</h3><p class="text-[10px] font-bold uppercase opacity-70">Mensagens Equipe</p></div>
         <button onclick="window.toggleChat()" class="p-2 hover:bg-indigo-500 rounded-full transition-all text-white font-bold text-xl font-black">✕</button>
     </div>
-    <div id="corpoChat" class="flex-1 overflow-y-auto p-6 flex flex-col gap-2 bg-slate-50"></div>
-    <div class="p-4 bg-white border-t">
+    <div id="corpoChat" class="flex-1 overflow-y-auto p-6 flex flex-col gap-2 bg-slate-50 font-bold"></div>
+    <div class="p-4 bg-white border-t font-bold">
         <div class="flex gap-2">
             <input id="inputChat" placeholder="MENSAGEM..." class="flex-1 p-4 border rounded-2xl font-bold text-sm outline-none focus:border-indigo-500 text-slate-900">
-            <button onclick="window.enviarMsgChat()" class="bg-indigo-600 text-white p-4 rounded-2xl shadow-lg font-black">➤</button>
+            <button onclick="window.enviarMsgChat()" class="bg-indigo-600 text-white p-4 rounded-2xl shadow-lg font-black font-bold">➤</button>
         </div>
     </div>
 </div>
 
 <!-- MODAL ORÇAMENTO -->
-<div id="modalOrcamento" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[1500] p-2 md:p-6 no-print text-slate-900" onclick="if(event.target===this) hideModal('modalOrcamento')">
+<div id="modalOrcamento" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[1500] p-2 md:p-6 no-print text-slate-900 font-bold" onclick="if(event.target===this) hideModal('modalOrcamento')">
     <div class="modal-inner bg-slate-50 rounded-[2.5rem] w-full max-w-[1200px] max-h-[95vh] flex flex-col shadow-2xl overflow-hidden font-bold" onclick="event.stopPropagation()">
         <div class="bg-white p-5 border-b flex justify-between items-center shrink-0">
-            <h2 class="text-xl font-black uppercase italic text-slate-900 tracking-tighter">ORÇAMENTO</h2>
+            <h2 class="text-xl font-black uppercase italic text-slate-900 tracking-tighter font-black">ORÇAMENTO</h2>
             <div class="flex gap-4 items-center">
                 <span id="dataAtual" class="text-slate-400 font-bold text-sm"></span>
                 <button onclick="hideModal('modalOrcamento')" class="text-slate-300 hover:text-red-500 font-black">✕</button>
@@ -174,24 +174,24 @@
         </div>
         <div class="flex-1 overflow-y-auto p-6 space-y-6">
             <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm text-slate-900 font-bold">
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                    <div class="md:col-span-2"><label class="form-label">Código</label><input class="form-input bg-slate-100 font-bold" value="AUTOMÁTICO" disabled></div>
-                    <div class="md:col-span-10"><label class="form-label font-bold">Veículo</label><div class="relative"><span class="absolute left-3 top-1/2 -translate-y-1/2 bg-green-600 text-white text-[9px] px-2 py-1 rounded font-black uppercase">NOVA PLACA</span><input id="orc_veiculo" class="form-input pl-24 font-bold" placeholder="EX: GOL G5" oninput="window.filtrarOrc()"></div></div>
-                    <div class="md:col-span-2"><label class="form-label">Placa</label><input id="orc_placa" class="form-input font-bold"></div>
-                    <div class="md:col-span-3"><label class="form-label font-bold">Câmbio</label><select id="orc_cambio" class="form-input font-bold"><option value="">SELECIONE</option><option>MANUAL</option><option>AUTOMÁTICO</option></select></div>
-                    <div class="md:col-span-2"><label class="form-label font-bold">Cor</label><input id="orc_cor_carro" class="form-input font-bold"></div>
-                    <div class="md:col-span-5"><label class="form-label">Cliente</label><input id="orc_cliente" class="form-input font-bold"></div>
-                    <div class="md:col-span-12"><label class="form-label">Endereço de Entrega</label><input id="orc_endereco" class="form-input font-bold"></div>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 text-slate-900 font-bold">
+                    <div class="md:col-span-2 font-bold"><label class="form-label font-bold">Código</label><input class="form-input bg-slate-100 font-bold" value="AUTOMÁTICO" disabled></div>
+                    <div class="md:col-span-10 font-bold"><label class="form-label font-bold font-bold">Veículo</label><div class="relative font-bold"><span class="absolute left-3 top-1/2 -translate-y-1/2 bg-green-600 text-white text-[9px] px-2 py-1 rounded font-black uppercase">NOVA PLACA</span><input id="orc_veiculo" class="form-input pl-24 font-bold" placeholder="EX: GOL G5" oninput="window.filtrarOrc()"></div></div>
+                    <div class="md:col-span-2 font-bold"><label class="form-label font-bold">Placa</label><input id="orc_placa" class="form-input font-bold font-bold"></div>
+                    <div class="md:col-span-3 font-bold"><label class="form-label font-bold">Câmbio</label><select id="orc_cambio" class="form-input font-bold"><option value="">SELECIONE</option><option>MANUAL</option><option>AUTOMÁTICO</option></select></div>
+                    <div class="md:col-span-2 font-bold"><label class="form-label font-bold">Cor</label><input id="orc_cor_carro" class="form-input font-bold font-bold"></div>
+                    <div class="md:col-span-5 font-bold"><label class="form-label font-bold">Cliente</label><input id="orc_cliente" class="form-input font-bold font-bold"></div>
+                    <div class="md:col-span-12 font-bold"><label class="form-label font-bold">Endereço de Entrega</label><input id="orc_endereco" class="form-input font-bold"></div>
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-                <div class="md:col-span-4"><label class="form-label text-blue-600 font-black mb-2">Peças</label><input id="buscaOrc" placeholder="PESQUISAR..." class="w-full p-4 border-2 border-blue-100 rounded-2xl font-bold bg-white text-slate-900 uppercase font-black" oninput="window.filtrarOrc()"><div id="resBuscaOrc" class="mt-4 space-y-2 max-h-[300px] overflow-y-auto"></div></div>
-                <div class="md:col-span-8"><div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm"><table class="w-full text-sm font-bold"><thead class="bg-slate-50 text-slate-400 font-black text-[9px] uppercase font-black"><tr><th class="p-4 text-left text-slate-900">ITEM</th><th class="p-4 text-center text-slate-900">QTD</th><th class="p-4 text-right text-slate-900">UNIT.</th><th class="p-4 text-right text-slate-900">TOTAL</th><th class="p-4"></th></tr></thead><tbody id="tbodyOrc" class="divide-y text-slate-900"></tbody></table><div class="p-6 bg-slate-50 flex justify-between items-center border-t"><span class="text-xs font-black text-slate-400 uppercase font-black">Total do Orçamento</span><span id="totalOrc" class="text-4xl font-black tracking-tighter text-slate-900">R$ 0,00</span></div></div></div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 font-bold">
+                <div class="md:col-span-4 font-bold text-slate-900"><label class="form-label text-blue-600 font-black mb-2">Peças</label><input id="buscaOrc" placeholder="PESQUISAR..." class="w-full p-4 border-2 border-blue-100 rounded-2xl font-bold bg-white text-slate-900 uppercase font-black" oninput="window.filtrarOrc()"><div id="resBuscaOrc" class="mt-4 space-y-2 max-h-[300px] overflow-y-auto font-bold text-slate-900 font-bold"></div></div>
+                <div class="md:col-span-8 font-bold text-slate-900 font-bold"><div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm font-bold text-slate-900"><table class="w-full text-sm font-bold"><thead class="bg-slate-50 text-slate-400 font-black text-[9px] uppercase font-black"><tr><th class="p-4 text-left text-slate-900">ITEM</th><th class="p-4 text-center text-slate-900">QTD</th><th class="p-4 text-right text-slate-900">UNIT.</th><th class="p-4 text-right text-slate-900">TOTAL</th><th class="p-4"></th></tr></thead><tbody id="tbodyOrc" class="divide-y text-slate-900 font-bold"></tbody></table><div class="p-6 bg-slate-50 flex justify-between items-center border-t font-bold font-bold"><span class="text-xs font-black text-slate-400 uppercase font-black font-black">Total</span><span id="totalOrc" class="text-4xl font-black tracking-tighter text-slate-900 font-black font-black">R$ 0,00</span></div></div></div>
             </div>
         </div>
         <div class="bg-white p-6 border-t flex justify-end gap-3 shrink-0 font-bold">
-            <button type="button" onclick="hideModal('modalOrcamento')" class="text-slate-400 font-bold px-6 uppercase text-xs">Sair</button>
-            <button type="button" onclick="window.finalizarVenda()" class="bg-green-600 text-white font-black px-16 py-4 rounded-2xl shadow-xl uppercase text-sm active:scale-95">Gravar e Imprimir</button>
+            <button type="button" onclick="hideModal('modalOrcamento')" class="text-slate-400 font-bold px-6 uppercase text-xs font-bold">Sair</button>
+            <button type="button" onclick="window.finalizarVenda()" class="bg-green-600 text-white font-black px-16 py-4 rounded-2xl shadow-xl uppercase text-sm active:scale-95 font-bold font-black">Gravar e Imprimir</button>
         </div>
     </div>
 </div>
@@ -200,50 +200,22 @@
 <div id="modalSucata" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-md flex items-center justify-center z-[1500] p-2 md:p-6 no-print text-slate-900 font-bold" onclick="if(event.target===this) hideModal('modalSucata')">
     <div class="modal-inner bg-white rounded-[2.5rem] w-full max-w-6xl max-h-[95vh] flex flex-col shadow-2xl overflow-hidden font-bold" onclick="event.stopPropagation()">
         <div class="bg-slate-900 p-6 flex justify-between items-center text-white text-yellow-400 font-black uppercase italic font-black">DESMONTE DE SUCATA NO PÁTIO</div>
-        <div class="flex-1 overflow-y-auto p-6 md:p-10 text-slate-900">
-            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8 bg-slate-50 p-6 rounded-3xl border border-slate-200 font-bold">
-                <div><label class="text-[10px] font-black text-slate-400 uppercase">Fabricante</label><input id="suc_fabricante" class="w-full p-3 border rounded-xl font-bold uppercase text-slate-900"></div>
-                <div><label class="text-[10px] font-black text-slate-400 uppercase">Veículo</label><input id="suc_veiculo" class="w-full p-3 border rounded-xl font-bold uppercase text-slate-900"></div>
-                <div><label class="text-[10px] font-black text-slate-400 uppercase">Ano</label><input id="suc_anos" class="w-full p-3 border rounded-xl font-bold uppercase text-slate-900"></div>
-                <div><label class="text-[10px] font-black text-slate-400 uppercase">Motor</label><input id="suc_motor" class="w-full p-3 border rounded-xl font-bold uppercase text-slate-900"></div>
-                <div><label class="text-[10px] font-black text-slate-400 uppercase">Câmbio</label><select id="suc_cambio" class="w-full p-3 border rounded-xl font-bold text-slate-900"><option>MANUAL</option><option>AUTOMÁTICO</option></select></div>
-                <div><label class="text-[10px] font-black text-slate-400 uppercase">Cor</label><input id="suc_cor" class="w-full p-3 border rounded-xl font-bold uppercase text-slate-900"></div>
-                <div class="md:col-span-6 mt-2"><button onclick="window.gerarListaPeçasSucata()" class="bg-slate-900 text-yellow-400 font-black px-8 py-3 rounded-2xl w-full uppercase shadow-xl font-black">1. Gerar Catálogo Automático</button></div>
+        <div class="flex-1 overflow-y-auto p-6 md:p-10 text-slate-900 font-bold">
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8 bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-900 font-bold font-bold">
+                <div><label class="text-[10px] font-black text-slate-400 uppercase font-black">Fabricante</label><input id="suc_fabricante" class="w-full p-3 border rounded-xl font-bold uppercase text-slate-900"></div>
+                <div><label class="text-[10px] font-black text-slate-400 uppercase font-black">Veículo</label><input id="suc_veiculo" class="w-full p-3 border rounded-xl font-bold uppercase text-slate-900"></div>
+                <div><label class="text-[10px] font-black text-slate-400 uppercase font-black">Ano</label><input id="suc_anos" class="w-full p-3 border rounded-xl font-bold uppercase text-slate-900"></div>
+                <div><label class="text-[10px] font-black text-slate-400 uppercase font-black">Motor</label><input id="suc_motor" class="w-full p-3 border rounded-xl font-bold uppercase text-slate-900"></div>
+                <div><label class="text-[10px] font-black text-slate-400 uppercase font-black">Câmbio</label><select id="suc_cambio" class="w-full p-3 border rounded-xl font-bold text-slate-900 font-black"><option>MANUAL</option><option>AUTOMÁTICO</option></select></div>
+                <div><label class="text-[10px] font-black text-slate-400 uppercase font-black">Cor</label><input id="suc_cor" class="w-full p-3 border rounded-xl font-bold uppercase text-slate-900 font-bold"></div>
+                <div class="md:col-span-6 mt-2 font-bold font-bold font-bold font-bold"><button onclick="window.gerarListaPeçasSucata()" class="bg-slate-900 text-yellow-400 font-black px-8 py-3 rounded-2xl w-full uppercase shadow-xl font-black font-black">1. Gerar Catálogo Automático</button></div>
             </div>
-            <div id="containerPeçasSucata" class="hidden text-slate-900"><div id="listaPeçasSucata" class="space-y-8 font-bold"></div><div class="mt-12 bg-slate-900 p-8 rounded-3xl text-center font-bold"><button onclick="window.finalizarEntradaSucata()" class="bg-yellow-500 text-slate-900 font-black px-12 py-5 rounded-3xl uppercase text-lg font-black shadow-2xl">3. Cadastrar Tudo no Estoque</button></div></div>
+            <div id="containerPeçasSucata" class="hidden text-slate-900 font-bold font-bold"><div id="listaPeçasSucata" class="space-y-8 font-bold"></div><div class="mt-12 bg-slate-900 p-8 rounded-3xl text-center font-bold font-bold font-bold"><button onclick="window.finalizarEntradaSucata()" class="bg-yellow-500 text-slate-900 font-black px-12 py-5 rounded-3xl uppercase text-lg font-black shadow-2xl font-black font-black">3. Cadastrar Itens no Estoque</button></div></div>
         </div>
     </div>
 </div>
 
-<!-- HISTÓRICO -->
-<div id="modalHistorico" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[1500] p-4 no-print text-slate-900 font-bold" onclick="if(event.target===this) hideModal('modalHistorico')">
-    <div class="modal-inner bg-white p-8 rounded-3xl w-full max-w-3xl shadow-2xl font-bold" onclick="event.stopPropagation()">
-        <h2 class="text-xl font-black mb-6 uppercase italic border-b pb-4 text-slate-900 font-black">Histórico de Orçamentos</h2>
-        <div id="listaHist" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2"></div>
-        <div class="flex justify-end mt-6"><button type="button" onclick="hideModal('modalHistorico')" class="bg-slate-900 text-white px-8 py-2 rounded-xl text-xs font-bold uppercase font-black font-black">Fechar</button></div>
-    </div>
-</div>
-
-<!-- CADASTRO MANUAL -->
-<div id="modalCadastro" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[1500] p-4 no-print text-slate-900 font-bold" onclick="if(event.target===this) hideModal('modalCadastro')">
-    <div class="modal-inner bg-white p-8 rounded-3xl w-full max-w-lg shadow-2xl font-bold" onclick="event.stopPropagation()">
-        <h2 class="text-xl font-black mb-6 uppercase italic border-b pb-4 text-slate-900">Gerenciar Item</h2>
-        <div class="space-y-4 text-slate-900 font-bold">
-            <input id="nomePeca" class="w-full p-4 border rounded-xl bg-slate-50 font-bold text-slate-900" placeholder="NOME DA PEÇA">
-            <textarea id="aplicacaoPeca" rows="2" class="w-full p-4 border rounded-xl bg-slate-50 font-bold text-blue-700" placeholder="APLICAÇÃO"></textarea>
-            <div class="grid grid-cols-2 gap-4 font-bold"><select id="lado" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900 font-black"><option>N/D</option><option>ESQUERDO</option><option>DIREITO</option><option>O PAR</option></select><select id="posicao" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900 font-black"><option>N/D</option><option>DIANTEIRO</option><option>TRASEIRO</option></select></div>
-            <div class="grid grid-cols-2 gap-4 font-bold"><select id="cambioPeca" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900 font-black"><option>N/D</option><option>MANUAL</option><option>AUTOMÁTICO</option></select><input id="corPeca" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900" placeholder="COR DA PEÇA"></div>
-            <div class="grid grid-cols-3 gap-4 font-bold text-slate-900"><select id="estado" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900 font-black"><option>NOVO</option><option>USADO</option><option>RECUPERADO</option></select><input id="valorPeca" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900" placeholder="VALOR"><input id="qtdPeca" type="number" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900" value="1"></div>
-            <div class="flex justify-end gap-3 pt-6 border-t"><button type="button" onclick="hideModal('modalCadastro')" class="px-6 font-bold text-slate-400 uppercase text-xs">Sair</button><button type="button" onclick="window.salvarFormPeca()" class="bg-yellow-500 px-8 py-3 rounded-2xl font-black uppercase shadow-lg text-white">Salvar</button></div>
-        </div>
-    </div>
-</div>
-
-<!-- VISUALIZAÇÃO ORÇAMENTO -->
-<div id="modalVisualizarOrcamento" class="hidden fixed inset-0 z-[2500] overflow-y-auto p-4 md:p-10 font-bold text-slate-900">
-    <div class="max-w-4xl mx-auto font-bold text-slate-900"><div class="flex justify-between items-center mb-6 no-print font-bold text-slate-900"><button onclick="hideModal(modalVisualizarOrcamento)" class="bg-slate-700 text-white px-6 py-2 rounded-xl font-bold uppercase text-[10px] text-white">← VOLTAR</button><div class="flex gap-2 font-bold"><button onclick="window.print()" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold uppercase text-[10px] shadow-lg text-white font-black">IMPRIMIR</button><button id="btnBaixarPDF" class="bg-red-600 text-white px-6 py-2 rounded-xl font-bold uppercase text-[10px] shadow-lg text-white font-black">PDF</button></div></div><div class="doc-paper shadow-2xl font-bold text-slate-900" id="folhaOrcamento"><div class="doc-header-box"><div><h1 class="text-3xl font-black uppercase tracking-tighter">ALAMPE</h1><p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-black">COMERCIO DE PEÇAS</p></div><div class="text-right"><div class="text-xl font-black uppercase border-b-2 border-black pb-1 mb-1 font-black text-slate-900">ORÇAMENTO</div><div class="text-[11px] font-bold" id="viewDataOrc">00/00/0000</div></div></div><div class="doc-section-title font-black text-white font-black">Dados do Cliente</div><div class="doc-grid mb-4 font-bold text-slate-900"><div class="doc-grid-item col-span-2 font-bold text-slate-900"><label>Cliente</label><span id="viewCliente">---</span></div><div class="doc-grid-item col-span-2 font-bold text-slate-900"><label>Contato</label><span id="viewContatoDoc">---</span></div><div class="doc-grid-item col-span-4 font-bold text-slate-900"><label>Entrega</label><span id="viewEnderecoDoc" class="uppercase font-bold font-black">---</span></div></div><div class="doc-section-title font-black text-white">Ficha do Veículo</div><div class="doc-grid mb-6 font-bold text-slate-900"><div class="doc-grid-item font-bold text-slate-900"><label>Placa</label><span id="viewPlaca">---</span></div><div class="doc-grid-item font-bold text-slate-900"><label>Câmbio</label><span id="viewCambioDoc">---</span></div><div class="doc-grid-item col-span-2 font-bold text-slate-900"><label>Modelo</label><span id="viewVeiculo">---</span></div><div class="doc-grid-item font-bold text-slate-900"><label>Ano</label><span id="viewAnos">---</span></div><div class="doc-grid-item font-bold text-slate-900"><label>Cor</label><span id="viewCor">---</span></div><div class="doc-grid-item col-span-2 font-bold text-slate-900"><label>Chassis</label><span id="viewChassis" class="uppercase font-black font-black">---</span></div></div><table class="doc-table font-bold text-slate-900"><thead><tr><th style="width: 50%; font-weight: 900;">PRODUTO / DESCRIÇÃO</th><th style="text-align: center; width: 10%; font-weight: 900;">QTD</th><th style="text-align: right; width: 20%; font-weight: 900;">UNITÁRIO</th><th style="text-align: right; width: 20%; font-weight: 900;">TOTAL</th></tr></thead><tbody id="viewCorpoTabela"></tbody></table><div class="doc-footer-box text-slate-900 font-bold"><div class="total-box font-bold font-black text-slate-900"><span class="text-[10px] font-black uppercase block text-slate-900 font-black">TOTAL FINAL</span><span id="viewTotalGeral" class="text-3xl font-black mono text-slate-900 font-black">R$ 0,00</span><p class="text-[9px] mt-2 italic border-t border-black pt-2 text-right font-bold">Válido por 15 dias.</p></div></div></div></div>
-</div>
-
+<!-- SCRIPT DE SISTEMA -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, doc, addDoc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -284,7 +256,13 @@
         async enviarMensagem(msg) { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'chat'), msg); }
     };
 
-    // LOGIN E INTERFACE
+    // INTERFACE GERAL
+    window.normalizar = (str) => (str || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    window.showModal = (mId) => { const m = typeof mId === 'string' ? document.getElementById(mId) : mId; if(!m) return; m.classList.remove('hidden'); setTimeout(()=>m.querySelector('.modal-inner')?.classList.add('scale-100'), 10); };
+    window.hideModal = (mId) => { const m = typeof mId === 'string' ? document.getElementById(mId) : mId; if(!m) return; m.querySelector('.modal-inner')?.classList.remove('scale-100'); setTimeout(()=>m.classList.add('hidden'), 200); };
+    window.formatMoney = (v) => 'R$ ' + parseFloat(String(v).replace('R$ ', '').replace(',', '.')).toFixed(2).replace('.', ',');
+    window.parseMoney = (s) => { if(!s) return 0; return parseFloat(String(s).replace('R$ ', '').replace(',', '.')) || 0; };
+    
     window.confirmarLogin = () => {
         const nome = document.getElementById('inputNomeLogin').value.trim();
         if (!nome) return alert("Digite seu nome!");
@@ -297,7 +275,6 @@
 
     window.trocarVendedor = () => { localStorage.removeItem('alampe_operador'); location.reload(); };
     window.verCatalogoCompleto = () => { window.mostrandoCatalogo = true; document.getElementById('busca').value = ''; window.render(); };
-    window.normalizar = (str) => (str || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
     window.render = () => {
         const tb = document.getElementById('tabela'); if(!tb) return;
@@ -314,32 +291,29 @@
             if(palavrasBusca.length === 0 || palavrasBusca.every(palavra => textoPeca.includes(palavra))){
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 border-b uppercase text-xs font-bold text-slate-900";
-                tr.innerHTML = `<td class="p-5 font-black">${p.nome}</td><td class="p-5 text-blue-700 font-bold">${p.aplicacao}</td><td class="p-5 text-center text-[10px] text-slate-400 font-black">${p.lado || 'N/D'} / ${p.posicao || 'N/D'}</td><td class="p-5 text-center font-black font-black"><span class="tag-cor">${p.cor || '---'}</span></td><td class="p-5 text-center font-black">${p.valor}</td><td class="p-5 text-center font-black">${p.qtd} UN</td><td class="p-5 text-right flex gap-1 justify-end"><button type="button" onclick="window.copiarWPP(${i})" class="bg-green-600 text-white p-2.5 rounded-xl text-[9px] font-black font-black font-black">WPP</button><button type="button" onclick="window.abrirEditar('${p.id}')" class="bg-slate-100 p-2.5 rounded-xl text-[9px] font-black hover:bg-yellow-400 shadow-sm text-slate-900 font-black">EDIT</button><button type="button" onclick="window.dbFunctions.excluirPeca('${p.id}')" class="text-red-400 p-2.5 font-black">✕</button></td>`;
+                tr.innerHTML = `<td class="p-5 font-black">${p.nome}</td><td class="p-5 text-blue-700 font-bold">${p.aplicacao}</td><td class="p-5 text-center text-[10px] text-slate-400 font-black">${p.lado || 'N/D'} / ${p.posicao || 'N/D'}</td><td class="p-5 text-center font-black font-black font-black"><span class="tag-cor">${p.cor || '---'}</span></td><td class="p-5 text-center font-black">${p.valor}</td><td class="p-5 text-center font-black">${p.qtd} UN</td><td class="p-5 text-right flex gap-1 justify-end font-black"><button type="button" onclick="window.copiarWPP(${i})" class="bg-green-600 text-white p-2.5 rounded-xl text-[9px] font-black font-black font-black">WPP</button><button type="button" onclick="window.abrirEditar('${p.id}')" class="bg-slate-100 p-2.5 rounded-xl text-[9px] font-black hover:bg-yellow-400 shadow-sm text-slate-900 font-black font-black">EDIT</button><button type="button" onclick="window.dbFunctions.excluirPeca('${p.id}')" class="text-red-400 p-2.5 font-black">✕</button></td>`;
                 tb.appendChild(tr);
             }
         });
     };
 
-    // CHAT
     window.toggleChat = () => { const painel = document.getElementById('painelChat'); if (!painel) return; painel.classList.toggle('aberto'); if (painel.classList.contains('aberto')) { const btnChat = document.getElementById('chatFloatingBtn'); const badgeNotif = document.getElementById('chatNotifBadge'); if (btnChat) btnChat.classList.remove('animate-bounce'); if (badgeNotif) badgeNotif.classList.add('hidden'); window.totalMsgsAnterior = window.mensagensChat.length; } };
     window.enviarMsgChat = async () => { const input = document.getElementById('inputChat'); const texto = input.value.trim(); if(!texto) return; await window.dbFunctions.enviarMensagem({ texto: texto, remetente: operadorAtual, dataISO: new Date().toISOString(), hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }); input.value = ''; };
-    window.renderChat = () => { const corpo = document.getElementById('corpoChat'); if(!corpo) return; corpo.innerHTML = ''; window.mensagensChat.forEach(m => { const eMeu = m.remetente === operadorAtual; const div = document.createElement('div'); div.className = eMeu ? 'msg-eu shadow-sm font-bold text-slate-900' : 'msg-vendedor shadow-sm font-bold text-slate-900'; div.innerHTML = `<p class="text-[9px] font-black uppercase opacity-50 mb-1">${m.remetente}</p><p class="text-sm font-bold">${m.texto}</p><p class="text-[8px] text-right mt-1 opacity-40">${m.hora}</p>`; corpo.appendChild(div); }); corpo.scrollTop = corpo.scrollHeight; };
+    window.renderChat = () => { const corpo = document.getElementById('corpoChat'); if(!corpo) return; corpo.innerHTML = ''; window.mensagensChat.forEach(m => { const eMeu = m.remetente === operadorAtual; const div = document.createElement('div'); div.className = eMeu ? 'msg-eu shadow-sm font-bold text-slate-900' : 'msg-vendedor shadow-sm font-bold text-slate-900 font-bold'; div.innerHTML = `<p class="text-[9px] font-black uppercase opacity-50 mb-1 font-bold">${m.remetente}</p><p class="text-sm font-bold">${m.texto}</p><p class="text-[8px] text-right mt-1 opacity-40">${m.hora}</p>`; corpo.appendChild(div); }); corpo.scrollTop = corpo.scrollHeight; };
 
-    // ORÇAMENTO
     window.abrirOrcamento = () => { window.editandoOrcamentoId = null; ["orc_cliente", "orc_placa", "orc_veiculo", "orc_cor_carro", "orc_cambio", "orc_endereco", "buscaOrc"].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; }); window.itensCart=[]; document.getElementById('resBuscaOrc').innerHTML = ''; document.getElementById('dataAtual').innerText = new Date().toLocaleDateString(); window.renderItensOrc(); window.showModal('modalOrcamento'); };
     window.editarOrcamento = (id) => { const orc = window.orcamentosHistorico.find(x => x.id === id); if (!orc) return; window.editandoOrcamentoId = id; document.getElementById('orc_cliente').value = orc.cliente || ''; document.getElementById('orc_placa').value = orc.placa || ''; document.getElementById('orc_veiculo').value = orc.veiculo || ''; document.getElementById('orc_cambio').value = orc.cambio || ''; document.getElementById('orc_cor_carro').value = orc.cor || ''; window.itensCart = [...orc.itens]; window.renderItensOrc(); window.hideModal('modalHistorico'); window.showModal('modalOrcamento'); };
-    window.renderItensOrc = () => { const body = document.getElementById('tbodyOrc'); if(!body) return; body.innerHTML = ''; let t = 0; window.itensCart.forEach((p, i) => { const s = window.parseMoney(p.valor) * p.qtdCart; t += s; const tr = document.createElement('tr'); tr.innerHTML = `<td class="p-4 font-bold text-xs text-slate-900"><b>${p.nome}</b><br><span class="text-[9px] text-blue-600 font-bold">${p.aplicacao}</span></td><td class="p-4 text-center font-bold text-slate-900">${p.qtdCart}</td><td class="p-4 text-right font-bold text-slate-900">${p.valor}</td><td class="p-4 text-right font-black text-slate-900">${window.formatMoney(s)}</td><td class="p-4 text-center"><button type="button" onclick="window.itensCart.splice(${i},1);window.renderItensOrc()" class="text-red-400 font-bold font-black">✕</button></td>`; body.appendChild(tr); }); document.getElementById('totalOrc').innerText = window.formatMoney(t); };
-    window.filtrarOrc = () => { const vRaw = document.getElementById('orc_veiculo').value; const pRaw = document.getElementById('buscaOrc').value; const fV = window.normalizar(vRaw).split(' ').filter(x => x.length > 0); const fP = window.normalizar(pRaw).split(' ').filter(x => x.length > 0); const res = document.getElementById('resBuscaOrc'); if(!res) return; res.innerHTML = ''; if(fV.length === 0 && fP.length === 0) return; window.pecas.forEach(p => { const txtApp = window.normalizar(p.aplicacao); const txtFull = window.normalizar(p.nome + ' ' + p.aplicacao); if(fV.every(w => txtApp.includes(w)) && fP.every(w => txtFull.includes(w))){ const d = document.createElement('div'); d.className = "p-3 border rounded-xl cursor-pointer bg-white hover:bg-blue-50 text-[11px] font-bold uppercase shadow-sm border-l-4 border-l-blue-400"; d.innerHTML = `<b>${p.nome}</b><br><span class="text-blue-600 text-[9px] font-bold">${p.aplicacao}</span>`; d.onclick = (e) => { e.stopPropagation(); const ja = window.itensCart.findIndex(it => it.id === p.id); if(ja > -1) window.itensCart[ja].qtdCart++; else window.itensCart.push({...p, qtdCart: 1}); window.renderItensOrc(); }; res.appendChild(d); } }); };
+    window.renderItensOrc = () => { const body = document.getElementById('tbodyOrc'); if(!body) return; body.innerHTML = ''; let t = 0; window.itensCart.forEach((p, i) => { const s = window.parseMoney(p.valor) * p.qtdCart; t += s; const tr = document.createElement('tr'); tr.innerHTML = `<td class="p-4 font-bold text-xs text-slate-900"><b>${p.nome}</b><br><span class="text-[9px] text-blue-600 font-bold font-bold">${p.aplicacao}</span></td><td class="p-4 text-center font-bold font-bold font-bold">${p.qtdCart}</td><td class="p-4 text-right font-bold text-slate-900 font-bold font-bold font-bold">${p.valor}</td><td class="p-4 text-right font-black font-black font-black font-bold font-bold">${window.formatMoney(s)}</td><td class="p-4 text-center font-black font-black font-bold"><button type="button" onclick="window.itensCart.splice(${i},1);window.renderItensOrc()" class="text-red-400 font-bold font-black font-black">✕</button></td>`; body.appendChild(tr); }); document.getElementById('totalOrc').innerText = window.formatMoney(t); };
+    window.filtrarOrc = () => { const vRaw = document.getElementById('orc_veiculo').value; const pRaw = document.getElementById('buscaOrc').value; const fV = window.normalizar(vRaw).split(' ').filter(x => x.length > 0); const fP = window.normalizar(pRaw).split(' ').filter(x => x.length > 0); const res = document.getElementById('resBuscaOrc'); if(!res) return; res.innerHTML = ''; if(fV.length === 0 && fP.length === 0) return; window.pecas.forEach(p => { const txtApp = window.normalizar(p.aplicacao); const txtFull = window.normalizar(p.nome + ' ' + p.aplicacao); if(fV.every(w => txtApp.includes(w)) && fP.every(w => txtFull.includes(w))){ const d = document.createElement('div'); d.className = "p-3 border rounded-xl cursor-pointer bg-white hover:bg-blue-50 text-[11px] font-bold uppercase shadow-sm border-l-4 border-l-blue-400 font-bold"; d.innerHTML = `<b>${p.nome}</b><br><span class="text-blue-600 text-[9px] font-bold">${p.aplicacao}</span>`; d.onclick = (e) => { e.stopPropagation(); const ja = window.itensCart.findIndex(it => it.id === p.id); if(ja > -1) window.itensCart[ja].qtdCart++; else window.itensCart.push({...p, qtdCart: 1}); window.renderItensOrc(); }; res.appendChild(d); } }); };
     window.finalizarVenda = async () => { if(!document.getElementById('orc_cliente').value || window.itensCart.length === 0) return alert("Peças!"); const orc = { cliente: document.getElementById('orc_cliente').value.toUpperCase(), placa: document.getElementById('orc_placa').value.toUpperCase(), veiculo: document.getElementById('orc_veiculo').value.toUpperCase(), cambio: document.getElementById('orc_cambio').value.toUpperCase(), cor: document.getElementById('orc_cor_carro').value.toUpperCase(), operador: operadorAtual, itens: window.itensCart, total: document.getElementById('totalOrc').innerText, data: new Date().toLocaleDateString(), dataTimestamp: new Date().toISOString() }; await window.dbFunctions.salvarOrcamento(orc); window.hideModal('modalOrcamento'); window.abrirVisualizacaoDados(orc); };
 
-    // SUCATA
     window.abrirSucata = () => { ["suc_fabricante", "suc_veiculo", "suc_anos", "suc_motor", "suc_cor", "suc_cambio"].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; }); document.getElementById('containerPeçasSucata').classList.add('hidden'); window.showModal('modalSucata'); };
     window.gerarListaPeçasSucata = () => {
         const vei = document.getElementById('suc_veiculo').value; if(!vei) return alert("Veículo!");
         const container = document.getElementById('containerPeçasSucata'); const lista = document.getElementById('listaPeçasSucata');
         container.classList.remove('hidden'); lista.innerHTML = '';
         const templates = [{ cat: "Lataria", itens: ["CAPO", "PARALAMA DIR", "PARALAMA ESQ", "PARACHOQUE DIANT", "PARACHOQUE TRAS", "TAMPA TRAS", "TETO", "PORTA DIANT DIR", "PORTA DIANT ESQ", "PORTA TRAS DIR", "PORTA TRAS ESQ", "RETROVISOR DIR", "RETROVISOR ESQ"] }, { cat: "Mecânica", itens: ["MOTOR PARCIAL", "CAIXA DE CAMBIO", "ALTERNADOR", "ARRANQUE", "COMPRESSOR AR COND", "RADIADOR", "SETOR DE DIREÇÃO", "MODULO INJEÇÃO", "CABEÇOTE", "COLETOR ADMISSÃO", "COLETOR ESCAPE", "BICO INJETOR", "BOBINA", "EMBREAGEM COMPLETA", "CARTER"] }, { cat: "Suspensão", itens: ["AMORTECEDOR DIANT DIR", "AMORTECEDOR DIANT ESQ", "BOMBA DE FREIO", "HIDROVACUO", "PINÇA DE FREIO", "BANDEJA DIR", "BANDEJA ESQ", "EIXO TRASEIRO"] }, { cat: "Interior/Vidros", itens: ["FAROL DIR", "FAROL ESQ", "LANTERNA DIR", "LANTERNA ESQ", "PARABRISA DIANT", "VIDRO TRASEIRO", "VIDRO DE PORTA", "BANCOS (JOGO)"] }];
-        templates.forEach(t => { const divCat = document.createElement('div'); divCat.innerHTML = `<h4 class="bg-slate-100 p-2 font-black text-[11px] uppercase mb-3 border-l-4 border-slate-900 text-slate-900">${t.cat}</h4><div class="sucata-grid font-bold"></div>`; const grid = divCat.querySelector('.sucata-grid'); t.itens.forEach(item => { const label = document.createElement('label'); label.className = "sucata-item text-slate-900 font-bold shadow-sm"; label.innerHTML = `<input type="checkbox" checked data-category="${t.cat}"> <span>${item}</span>`; grid.appendChild(label); }); lista.appendChild(divCat); });
+        templates.forEach(t => { const divCat = document.createElement('div'); divCat.innerHTML = `<h4 class="bg-slate-100 p-2 font-black text-[11px] uppercase mb-3 border-l-4 border-slate-900 text-slate-900">${t.cat}</h4><div class="sucata-grid font-bold font-bold font-bold font-bold font-bold font-bold font-bold font-bold"></div>`; const grid = divCat.querySelector('.sucata-grid'); t.itens.forEach(item => { const label = document.createElement('label'); label.className = "sucata-item text-slate-900 font-bold shadow-sm font-bold font-bold font-bold"; label.innerHTML = `<input type="checkbox" checked data-category="${t.cat}"> <span>${item}</span>`; grid.appendChild(label); }); lista.appendChild(divCat); });
     };
 
     window.finalizarEntradaSucata = async () => {
@@ -361,15 +335,15 @@
     window.salvarFormPeca = async () => { const n = document.getElementById('nomePeca').value; const v = document.getElementById('valorPeca').value; if(!n || !v) return alert("Preencha!"); await window.dbFunctions.salvarPeca({ nome: n.toUpperCase(), aplicacao: document.getElementById('aplicacaoPeca').value.toUpperCase(), lado: document.getElementById('lado').value, posicao: document.getElementById('posicao').value, cor: document.getElementById('corPeca').value.toUpperCase(), cambio: document.getElementById('cambioPeca').value, estado: document.getElementById('estado').value, valor: window.formatMoney(v), qtd: parseInt(document.getElementById('qtdPeca').value) || 0, operadorUltimaMod: operadorAtual }); window.hideModal('modalCadastro'); };
     window.abrirEditar = (id) => { const p = window.pecas.find(x => x.id === id); window.editandoId = id; document.getElementById('nomePeca').value = p.nome; document.getElementById('aplicacaoPeca').value = p.aplicacao; document.getElementById('lado').value = p.lado || 'N/D'; document.getElementById('posicao').value = p.posicao || 'N/D'; document.getElementById('cambioPeca').value = p.cambio || 'N/D'; document.getElementById('corPeca').value = p.cor || ''; document.getElementById('estado').value = p.estado || 'NOVO'; document.getElementById('valorPeca').value = p.valor.replace('R$ ',''); document.getElementById('qtdPeca').value = p.qtd; window.showModal('modalCadastro'); };
     window.abrirHistorico = () => { window.renderHistorico(); window.showModal('modalHistorico'); };
-    window.renderHistorico = () => { const l = document.getElementById('listaHist'); if(!l) return; l.innerHTML = ''; window.orcamentosHistorico.forEach(o => { const d = document.createElement('div'); d.className = "p-4 border rounded-xl flex justify-between items-center bg-white mb-2 font-bold shadow-sm font-bold text-slate-900"; d.innerHTML = `<div>${o.cliente} - ${o.veiculo} (${o.placa || 'S/ PLACA'})</div><div class="flex gap-2"><b>${o.total}</b><button onclick="window.abrirVisualizacao('${o.id}')" class="bg-blue-600 text-white px-3 py-1 rounded-lg font-bold">VER</button><button onclick="window.editarOrcamento('${o.id}')" class="bg-yellow-500 text-slate-900 px-3 py-1 rounded-lg font-bold font-black">EDIT</button><button onclick="window.dbFunctions.excluirOrcamento('${o.id}')" class="text-red-400 font-bold font-black">✕</button></div>`; l.appendChild(d); }); };
+    window.renderHistorico = () => { const l = document.getElementById('listaHist'); if(!l) return; l.innerHTML = ''; window.orcamentosHistorico.forEach(o => { const d = document.createElement('div'); d.className = "p-4 border rounded-xl flex justify-between items-center bg-white mb-2 font-bold shadow-sm font-bold font-bold font-bold font-bold"; d.innerHTML = `<div>${o.cliente} - ${o.veiculo} (${o.placa || 'S/ PLACA'})</div><div class="flex gap-2"><b>${o.total}</b><button onclick="window.abrirVisualizacao('${o.id}')" class="bg-blue-600 text-white px-3 py-1 rounded-lg font-bold">VER</button><button onclick="window.editarOrcamento('${o.id}')" class="bg-yellow-500 text-slate-900 px-3 py-1 rounded-lg font-bold">EDIT</button><button onclick="window.dbFunctions.excluirOrcamento('${o.id}')" class="text-red-400">✕</button></div>`; l.appendChild(d); }); };
     window.abrirVisualizacao = (id) => { const orc = window.orcamentosHistorico.find(x => x.id === id); if(orc) window.abrirVisualizacaoDados(orc); };
-    window.abrirVisualizacaoDados = (orc) => { document.getElementById('viewDataOrc').innerText = orc.data; document.getElementById('viewCliente').innerText = orc.cliente; document.getElementById('viewEnderecoDoc').innerText = orc.endereco || 'RETIRADA'; document.getElementById('viewPlaca').innerText = orc.placa || '---'; document.getElementById('viewCambioDoc').innerText = orc.cambio || '---'; document.getElementById('viewVeiculo').innerText = orc.veiculo; document.getElementById('viewCor').innerText = orc.cor || '---'; document.getElementById('viewTotalGeral').innerText = orc.total; const corpo = document.getElementById('viewCorpoTabela'); corpo.innerHTML = ''; orc.itens.forEach(it => { const tr = document.createElement('tr'); tr.innerHTML = `<td class="p-3"><div class="font-bold text-slate-900">${it.nome}</div><div class="text-[9px] uppercase font-bold text-slate-500">${it.aplicacao}</div></td><td class="text-center font-bold text-slate-900">${it.qtdCart}</td><td class="text-right font-bold text-slate-900">${it.valor}</td><td class="text-right font-black text-slate-900">${window.formatMoney(window.parseMoney(it.valor) * it.qtdCart)}</td>`; corpo.appendChild(tr); }); document.getElementById('btnBaixarPDF').onclick = () => window.gerarPDFProfissional(orc); window.showModal('modalVisualizarOrcamento'); };
+    window.abrirVisualizacaoDados = (orc) => { document.getElementById('viewDataOrc').innerText = orc.data; document.getElementById('viewCliente').innerText = orc.cliente; document.getElementById('viewEnderecoDoc').innerText = orc.endereco || 'RETIRADA'; document.getElementById('viewPlaca').innerText = orc.placa || '---'; document.getElementById('viewCambioDoc').innerText = orc.cambio || '---'; document.getElementById('viewVeiculo').innerText = orc.veiculo; document.getElementById('viewCor').innerText = orc.cor || '---'; document.getElementById('viewTotalGeral').innerText = orc.total; const corpo = document.getElementById('viewCorpoTabela'); corpo.innerHTML = ''; orc.itens.forEach(it => { const tr = document.createElement('tr'); tr.innerHTML = `<td><div class="font-bold text-slate-900">${it.nome}</div><div class="text-[9px] uppercase font-bold text-slate-500">${it.aplicacao}</div></td><td class="text-center font-bold text-slate-900">${it.qtdCart}</td><td class="text-right font-bold text-slate-900 font-bold">${it.valor}</td><td class="text-right font-black text-slate-900 font-bold">${window.formatMoney(window.parseMoney(it.valor) * it.qtdCart)}</td>`; corpo.appendChild(tr); }); document.getElementById('btnBaixarPDF').onclick = () => window.gerarPDFProfissional(orc); window.showModal('modalVisualizarOrcamento'); };
     window.gerarPDFProfissional = (orc) => { const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.setFillColor(0, 0, 0); doc.rect(0, 0, 210, 25, 'F'); doc.setTextColor(255); doc.setFontSize(20); doc.text("ALAMPE", 15, 17); doc.setFontSize(8); doc.text("COMERCIO DE PEÇAS", 15, 22); doc.setTextColor(50); doc.setFontSize(10); doc.text("DATA: " + orc.data, 160, 15); doc.text("CLIENTE: " + orc.cliente + " | PLACA: " + (orc.placa || '---'), 15, 35); doc.text("VEICULO: " + orc.veiculo, 15, 40); const body = orc.itens.map(it => [it.nome + "\n" + it.aplicacao, it.qtdCart, it.valor, window.formatMoney(window.parseMoney(it.valor) * it.qtdCart)]); doc.autoTable({ startY: 45, head: [['DESCRIÇÃO', 'QTD', 'UNIT.', 'TOTAL']], body: body, theme: 'grid', headStyles: { fillColor: [0, 0, 0] }, styles: { fontSize: 8 }}); doc.save(`Orcamento_${orc.cliente}.pdf`); };
     window.copiarWPP = (i) => { const p = window.pecas[i]; const msg = `*ALAMPE PEÇAS*\n📦 *ITEM:* ${p.nome}\n🚗 *APLICAÇÃO:* ${p.aplicacao}\n🎨 *COR:* ${p.cor || '---'}\n💰 *VALOR:* ${p.valor}`; const el = document.createElement('textarea'); el.value = msg; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); alert("Copiado!"); };
     window.limparEstoqueCompleto = async () => { if(!confirm("Zerar estoque?")) return; for(const p of window.pecas) { await window.dbFunctions.excluirPeca(p.id); } alert("Estoque zerado!"); };
     window.importarCatalogoAlampe = async () => { if(!confirm("Importar?")) return; const itens = [ { nome: "CAPO", aplicacao: "VW GOL G5 (2009-2012)", cor: "PRATA", lado: "N/D", posicao: "DIANTEIRO", estado: "NOVO", valor: "R$ 450,00", qtd: 3 } ]; for(const item of itens) { await window.dbFunctions.salvarPeca(item); } alert("Importado!"); };
 
-    async function startListeners() {
+    function startListeners() {
         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'pecas'), (snap) => {
             window.pecas = snap.docs.map(d => ({ id: d.id, ...d.data() }));
             const badge = document.getElementById('totalPecasBadge');
@@ -406,7 +380,6 @@
         try {
             await signInAnonymously(auth);
             startListeners();
-            // LÓGICA DE ACTUALIZAÇÃO (VERSION CHECK)
             setInterval(async () => {
                 try {
                     const response = await fetch(window.location.href, { method: 'HEAD' });
@@ -420,7 +393,6 @@
         } catch (e) { console.error(e); }
     }
 
-    // VERIFICA SE JÁ ESTÁ LOGADO
     if (operadorAtual) { 
         document.getElementById('loginScreen').style.display = "none"; 
         document.getElementById('appScreen').style.display = "block"; 
