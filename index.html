@@ -341,7 +341,7 @@
             if(f === "" || textoPeca.includes(f)){
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 border-b uppercase text-xs font-bold text-slate-900";
-                tr.innerHTML = `<td class="p-5 font-black">${p.nome}</td><td class="p-5 text-blue-700 font-bold">${p.aplicacao}</td><td class="p-5 text-center text-[10px] text-slate-400 font-black">${p.lado || 'N/D'} / ${p.posicao || 'N/D'}</td><td class="p-5 text-center font-black font-black font-black"><span class="tag-cor">${p.cor || '---'}</span></td><td class="p-5 text-center font-black font-black font-black">${p.valor}</td><td class="p-5 text-center font-black font-black font-black">${p.qtd} UN</td><td class="p-5 text-right flex gap-1 justify-end font-black"><button type="button" onclick="window.copiarWPP(${i})" class="bg-green-600 text-white p-2.5 rounded-xl text-[9px] font-black font-black font-black">WPP</button><button type="button" onclick="window.abrirEditar('${p.id}')" class="bg-slate-100 p-2.5 rounded-xl text-[9px] font-black hover:bg-yellow-400 shadow-sm text-slate-900 font-black font-black">EDIT</button><button type="button" onclick="window.dbFunctions.excluirPeca('${p.id}')" class="text-red-400 p-2.5 font-black">✕</button></td>`;
+                tr.innerHTML = `<td class="p-5 font-black">${p.nome}</td><td class="p-5 text-blue-700 font-bold">${p.aplicacao}</td><td class="p-5 text-center text-[10px] text-slate-400 font-black font-black font-black font-black">${p.lado || 'N/D'} / ${p.posicao || 'N/D'}</td><td class="p-5 text-center font-black font-black font-black font-black font-black font-black"><span class="tag-cor">${p.cor || '---'}</span></td><td class="p-5 text-center font-black font-black font-black font-black font-black font-black font-black">${p.valor}</td><td class="p-5 text-center font-black font-black font-black font-black font-black font-black font-black font-black">${p.qtd} UN</td><td class="p-5 text-right flex gap-1 justify-end font-black"><button type="button" onclick="window.copiarWPP(${i})" class="bg-green-600 text-white p-2.5 rounded-xl text-[9px] font-black font-black font-black font-black">WPP</button><button type="button" onclick="window.abrirEditar('${p.id}')" class="bg-slate-100 p-2.5 rounded-xl text-[9px] font-black hover:bg-yellow-400 shadow-sm text-slate-900 font-black font-black">EDIT</button><button type="button" onclick="window.dbFunctions.excluirPeca('${p.id}')" class="text-red-400 p-2.5 font-black">✕</button></td>`;
                 tb.appendChild(tr);
             }
         });
@@ -445,7 +445,7 @@
     window.limparEstoqueCompleto = async () => { if(!confirm("Zerar estoque cloud?")) return; for(const p of window.pecas) { await window.dbFunctions.excluirPeca(p.id); } alert("Limpo!"); };
     window.importarCatalogoAlampe = async () => { if(!confirm("Importar base?")) return; const itens = [ { nome: "CAPO", aplicacao: "VW GOL G5 (2009-2012)", cor: "PRATA", lado: "N/D", posicao: "DIANTEIRO", estado: "NOVO", valor: "R$ 450,00", qtd: 3 } ]; for(const item of itens) { await window.dbFunctions.salvarPeca(item); } alert("Importado!"); };
 
-    // LISTENERS E ATALHOS
+    // INICIALIZAÇÃO E LISTENERS
     function startListeners() {
         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'pecas'), (snap) => {
             window.pecas = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -510,12 +510,22 @@
         } catch (e) { console.error(e); }
     }
 
+    // ATALHOS DE TECLADO (ESC E ENTER)
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            // Fecha Modais
             ['modalVisualizarOrcamento', 'modalCadastro', 'modalHistorico', 'modalSucata', 'modalOrcamento'].forEach(mId => {
                 const m = document.getElementById(mId);
                 if (m && !m.classList.contains('hidden')) window.hideModal(mId);
             });
+            // Fecha Estoque Completo (Results Area)
+            const resultsArea = document.getElementById('resultsArea');
+            if (resultsArea && !resultsArea.classList.contains('hidden')) {
+                document.getElementById('busca').value = '';
+                window.mostrandoCatalogo = false;
+                window.render();
+            }
+            // Fecha Chat
             const chat = document.getElementById('painelChat');
             if (chat && chat.classList.contains('aberto')) window.toggleChat();
         }
