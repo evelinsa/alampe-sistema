@@ -141,11 +141,6 @@
                 <div class="dash-icon bg-yellow-100 text-yellow-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg></div>
                 <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">CADASTRAR ITEM</h3><p class="text-xs text-slate-400 font-bold uppercase">Cadastro avulso</p></div>
             </div>
-            <div onclick="window.limparEstoqueCompleto()" class="dash-card font-bold">
-                <div class="dash-icon bg-orange-100 text-orange-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
-                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg text-orange-600">ZERAR ESTOQUE</h3><p class="text-xs text-slate-400 font-bold uppercase">Limpar banco</p></div>
-            </div>
-        </div>
 
         <!-- TABELA DE RESULTADOS -->
         <div id="resultsArea" class="hidden">
@@ -190,7 +185,7 @@
 <div id="modalOrcamento" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[1500] p-2 md:p-6 no-print text-slate-900 font-bold" onclick="if(event.target===this) hideModal('modalOrcamento')">
     <div class="modal-inner bg-white rounded-[2.5rem] w-full max-w-[1200px] max-h-[95vh] flex flex-col shadow-2xl overflow-hidden font-bold" onclick="event.stopPropagation()">
         <div class="bg-slate-50 p-5 border-b flex justify-between items-center shrink-0">
-            <h2 class="text-xl font-black uppercase italic">GERAR ORÇAMENTO PROFISSIONAL</h2>
+            <h2 class="text-xl font-black uppercase italic">GERAR ORÇAMENTO</h2>
             <button onclick="hideModal('modalOrcamento')" class="text-slate-300 hover:text-red-500 font-black">✕</button>
         </div>
         <div class="flex-1 overflow-y-auto p-6 space-y-6">
