@@ -119,7 +119,7 @@
             <input id="busca" placeholder="PESQUISE PEÇA, CARRO OU COR..." class="w-full p-6 border-2 border-slate-200 rounded-3xl bg-white font-bold text-xl text-slate-900 shadow-xl focus:border-blue-500 outline-none transition-all" oninput="window.render()">
         </div>
 
-        <!-- PAINEL DASHBOARD COMPLETO -->
+        <!-- PAINEL DASHBOARD COM 5 BOTÕES (BOTAO ZERAR REMOVIDO) -->
         <div id="homeDashboard" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 font-bold">
             <div onclick="window.verCatalogoCompleto()" class="dash-card">
                 <div class="dash-icon bg-green-100 text-green-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg></div>
@@ -140,10 +140,6 @@
             <div onclick="window.abrirCadastro()" class="dash-card">
                 <div class="dash-icon bg-yellow-100 text-yellow-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg></div>
                 <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">CADASTRAR ITEM</h3><p class="text-xs text-slate-400 font-bold uppercase">Cadastro avulso</p></div>
-            </div>
-            <div onclick="window.limparEstoqueCompleto()" class="dash-card font-bold">
-                <div class="dash-icon bg-orange-100 text-orange-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
-                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg text-orange-600">ZERAR ESTOQUE</h3><p class="text-xs text-slate-400 font-bold uppercase">Limpar banco</p></div>
             </div>
         </div>
 
@@ -286,7 +282,7 @@
     let operadorAtual = localStorage.getItem('alampe_operador') || "";
     window.totalMsgsAnterior = 0;
     window.mostrandoCatalogo = false;
-    let initialChatLoad = true; // Controle para não notificar mensagens antigas no carregamento
+    let initialChatLoad = true; 
 
     // BANCO DE DADOS
     window.dbFunctions = {
@@ -303,7 +299,7 @@
         async enviarMensagem(msg) { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'chat'), msg); }
     };
 
-    // PEDIR PERMISSÃO PARA NOTIFICAÇÕES NA BARRA DE TAREFAS
+    // PEDIR PERMISSÃO PARA NOTIFICAÇÕES
     async function requestNotificationPermission() {
         if (!("Notification" in window)) return;
         if (Notification.permission !== "granted" && Notification.permission !== "denied") {
@@ -320,7 +316,7 @@
         document.getElementById('loginScreen').style.display = "none";
         document.getElementById('appScreen').style.display = "block";
         document.getElementById('nomeVendedorDisplay').innerText = "VENDEDOR(A): " + operadorAtual;
-        requestNotificationPermission(); // Pede permissão ao logar
+        requestNotificationPermission();
     };
 
     window.showModal = (mId) => { const m = document.getElementById(mId); if(!m) return; m.classList.remove('hidden'); setTimeout(()=>m.querySelector('.modal-inner')?.classList.add('scale-100'), 10); };
@@ -449,7 +445,7 @@
     window.limparEstoqueCompleto = async () => { if(!confirm("Zerar estoque cloud?")) return; for(const p of window.pecas) { await window.dbFunctions.excluirPeca(p.id); } alert("Limpo!"); };
     window.importarCatalogoAlampe = async () => { if(!confirm("Importar base?")) return; const itens = [ { nome: "CAPO", aplicacao: "VW GOL G5 (2009-2012)", cor: "PRATA", lado: "N/D", posicao: "DIANTEIRO", estado: "NOVO", valor: "R$ 450,00", qtd: 3 } ]; for(const item of itens) { await window.dbFunctions.salvarPeca(item); } alert("Importado!"); };
 
-    // INICIALIZAÇÃO E LISTENERS
+    // LISTENERS E ATALHOS
     function startListeners() {
         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'pecas'), (snap) => {
             window.pecas = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -460,18 +456,14 @@
         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'orcamentos'), (snap) => {
             window.orcamentosHistorico = snap.docs.map(d => ({ id: d.id, ...d.data() }));
             window.orcamentosHistorico.sort((a, b) => new Date(b.dataTimestamp) - new Date(a.dataTimestamp));
-            const modHist = document.getElementById('modalHistorico');
-            if (modHist && !modHist.classList.contains('hidden')) window.renderHistorico();
+            if (!document.getElementById('modalHistorico').classList.contains('hidden')) window.renderHistorico();
         });
         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'chat'), (snap) => {
             window.mensagensChat = snap.docs.map(d => ({ id: d.id, ...d.data() }));
             window.mensagensChat.sort((a, b) => new Date(a.dataISO) - new Date(b.dataISO));
-            
             const totalAgora = window.mensagensChat.length;
             const chatPainel = document.getElementById('painelChat');
             const isChatAberto = chatPainel?.classList.contains('aberto');
-
-            // LÓGICA DE NOTIFICAÇÃO (SOMENTE NOVAS)
             if (!initialChatLoad) {
                 snap.docChanges().forEach((change) => {
                     if (change.type === "added") {
@@ -488,10 +480,7 @@
                                 }
                             }
                             if (Notification.permission === "granted" && (document.hidden || !isChatAberto)) {
-                                new Notification("Alampe ERP - Chat", {
-                                    body: `${newMsg.remetente}: ${newMsg.texto}`,
-                                    icon: "logo.png"
-                                });
+                                new Notification("Alampe ERP - Chat", { body: `${newMsg.remetente}: ${newMsg.texto}`, icon: "logo.png" });
                             }
                         }
                     }
@@ -521,61 +510,27 @@
         } catch (e) { console.error(e); }
     }
 
-    // ATALHOS DE TECLADO (ESC E ENTER)
     window.addEventListener('keydown', (e) => {
-        // FUNÇÃO ESC (Sair de telas)
         if (e.key === 'Escape') {
-            const modals = [
-                'modalVisualizarOrcamento', 
-                'modalCadastro', 
-                'modalHistorico', 
-                'modalSucata', 
-                'modalOrcamento'
-            ];
-            modals.forEach(mId => {
+            ['modalVisualizarOrcamento', 'modalCadastro', 'modalHistorico', 'modalSucata', 'modalOrcamento'].forEach(mId => {
                 const m = document.getElementById(mId);
                 if (m && !m.classList.contains('hidden')) window.hideModal(mId);
             });
-            // Fecha o chat se estiver aberto
             const chat = document.getElementById('painelChat');
             if (chat && chat.classList.contains('aberto')) window.toggleChat();
         }
-
-        // FUNÇÃO ENTER (Confirmar ações)
         if (e.key === 'Enter') {
-            // Se estiver na tela de login
             const loginScreen = document.getElementById('loginScreen');
-            if (loginScreen.style.display !== 'none') {
-                window.confirmarLogin();
-                return;
-            }
-
-            // Se o modal de Cadastro estiver aberto
+            if (loginScreen.style.display !== 'none') { window.confirmarLogin(); return; }
             const mCad = document.getElementById('modalCadastro');
-            if (mCad && !mCad.classList.contains('hidden')) {
-                window.salvarFormPeca();
-                return;
-            }
-
-            // Se o modal de Orçamento estiver aberto
+            if (mCad && !mCad.classList.contains('hidden')) { window.salvarFormPeca(); return; }
             const mOrc = document.getElementById('modalOrcamento');
-            if (mOrc && !mOrc.classList.contains('hidden')) {
-                // Só finaliza se não estiver digitando no campo de busca de peças
-                if (document.activeElement.id !== 'buscaOrc') {
-                    window.finalizarVenda();
-                }
-                return;
-            }
-
-            // Se o modal de Sucata estiver aberto
+            if (mOrc && !mOrc.classList.contains('hidden')) { if (document.activeElement.id !== 'buscaOrc') window.finalizarVenda(); return; }
             const mSuc = document.getElementById('modalSucata');
             if (mSuc && !mSuc.classList.contains('hidden')) {
                 const containerPecas = document.getElementById('containerPeçasSucata');
-                if (containerPecas.classList.contains('hidden')) {
-                    window.gerarListaPeçasSucata();
-                } else {
-                    window.finalizarEntradaSucata();
-                }
+                if (containerPecas.classList.contains('hidden')) window.gerarListaPeçasSucata();
+                else window.finalizarEntradaSucata();
                 return;
             }
         }
@@ -585,10 +540,7 @@
         document.getElementById('loginScreen').style.display = "none"; 
         document.getElementById('appScreen').style.display = "block"; 
         initSystem();
-        setTimeout(() => { 
-            const d = document.getElementById('nomeVendedorDisplay');
-            if(d) d.innerText = "VENDEDOR(A): " + operadorAtual; 
-        }, 1000);
+        setTimeout(() => { document.getElementById('nomeVendedorDisplay').innerText = "VENDEDOR(A): " + operadorAtual; }, 1000);
     } else {
         document.getElementById('loginScreen').style.display = "flex";
         initSystem();
