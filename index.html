@@ -4,94 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ALAMPE ERP - PRO</title>
-    
-    <!-- ÍCONE DA ABA -->
     <link rel="icon" type="image/png" href="logo.png">
-    
-    <!-- Configurações PWA Profissional -->
     <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <!-- Manifesto PWA -->
     <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Alampe%20ERP%20Pro%22,%22short_name%22:%22Alampe%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23f1f5f9%22,%22theme_color%22:%22%230f172a%22,%22icons%22:[{%22src%22:%22logo.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
-        
-        body { background: #f1f5f9; font-family: 'Inter', sans-serif; color: #1e293b; overflow-x: hidden; margin: 0; }
-        
-        /* Camadas de Visibilidade */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { background: #f1f5f9; font-family: 'Inter', sans-serif; color: #1e293b; overflow-x: hidden; margin: 0; font-weight: 700; }
         #loginScreen { position: fixed; inset: 0; background: #0f172a; z-index: 9999; display: flex; align-items: center; justify-content: center; }
         #appScreen { display: none; min-height: 100vh; padding: 20px; } 
-
-        .erp-card { background: white; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.3s ease; }
-        input, select, textarea { text-transform: uppercase; transition: all 0.2s; font-size: 0.85rem; }
-        
-        /* Dashboard */
-        .dash-card { background: white; padding: 30px; border-radius: 24px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; gap: 15px; cursor: pointer; transition: all 0.2s ease-out; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .erp-card { background: white; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        input, select, textarea { text-transform: uppercase; font-size: 0.85rem; }
+        .dash-card { background: white; padding: 30px; border-radius: 24px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; gap: 15px; cursor: pointer; transition: all 0.2s ease-out; }
         .dash-card:hover { transform: translateY(-5px); border-color: #3b82f6; box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1); }
         .dash-icon { width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-
-        /* Modais */
-        .modal-inner { transform: scale(0.95); opacity: 0; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .modal-inner { transform: scale(0.95); opacity: 0; transition: all 0.2s ease; }
         .modal-inner.scale-100 { transform: scale(1); opacity: 1; }
-
-        #updateBanner { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #3b82f6; color: white; padding: 15px; text-align: center; z-index: 5000; font-weight: 900; cursor: pointer; }
-
-        #homeFloatingBtn { position: fixed; top: 15px; left: 15px; width: 45px; height: 45px; border-radius: 50%; background: #1e293b; color: white; display: flex; align-items: center; justify-content: center; z-index: 1000; cursor: pointer; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-
-        .tag-cor { background: #f8fafc; border: 1px solid #e2e8f0; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; color: #475569; }
-
-        /* Chat Estilo Original */
         #painelChat { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(100%); }
         #painelChat.aberto { transform: translateX(0); }
         .msg-vendedor { align-self: flex-start; background: #f1f5f9; border-radius: 12px 12px 12px 0; border-left: 3px solid #cbd5e1; max-width: 85%; padding: 10px; margin-bottom: 8px; }
         .msg-eu { align-self: flex-end; background: #dcfce7; border-radius: 12px 12px 0 12px; border-right: 3px solid #22c55e; max-width: 85%; padding: 10px; margin-bottom: 8px; }
-        
         #chatFloatingBtn { position: fixed; bottom: 24px; right: 24px; width: 64px; height: 64px; border-radius: 50%; background: #4f46e5; color: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4); z-index: 1000; cursor: pointer; }
         #chatNotifBadge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; width: 24px; height: 24px; border-radius: 50%; font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; border: 3px solid white; }
-
-        /* Documento PDF Visualização */
-        .doc-paper { background: white; width: 100%; max-width: 800px; margin: 20px auto; min-height: 1000px; padding: 50px; color: #000; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-        .doc-header-box { border: 2px solid #000; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .doc-section-title { background: #000; color: #fff; padding: 4px 10px; font-size: 10px; font-weight: 900; text-transform: uppercase; margin-bottom: 5px; }
-        .doc-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid #000; margin-bottom: 15px; }
-        .doc-grid-item { padding: 8px; border: 0.5px solid #000; }
-        .doc-grid-item label { display: block; font-size: 8px; font-weight: 800; color: #444; text-transform: uppercase; }
-        .doc-grid-item span { font-size: 10px; font-weight: 700; display: block; color: #000; }
-        .doc-table { width: 100%; border-collapse: collapse; border: 1px solid #000; }
-        .doc-table th { border: 1px solid #000; padding: 6px; font-size: 10px; text-transform: uppercase; background: #f1f5f9; text-align: left; color: #000; }
-        .doc-table td { border: 1px solid #000; padding: 6px; font-size: 10px; color: #000; }
-        .total-box { border: 2px solid #000; padding: 10px; width: 220px; text-align: right; margin-left: auto; margin-top: 10px; color: #000; }
-
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white; }
-            .doc-paper { box-shadow: none !important; margin: 0 !important; width: 100% !important; border: none !important; }
-        }
+        .tag-cor { background: #f8fafc; border: 1px solid #e2e8f0; padding: 2px 8px; border-radius: 6px; font-size: 10px; color: #475569; }
+        .doc-paper { background: white; width: 100%; max-width: 800px; margin: 20px auto; padding: 50px; color: #000; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        @media print { .no-print { display: none !important; } body { background: white; } .doc-paper { box-shadow: none !important; margin: 0 !important; width: 100% !important; border: none !important; } }
     </style>
 </head>
-<body class="font-bold text-slate-900">
+<body>
 
-<!-- TELA DE LOGIN -->
 <div id="loginScreen">
     <div class="bg-white p-12 rounded-[3rem] shadow-2xl w-full max-w-md text-center border-t-8 border-yellow-400">
         <div class="w-24 h-24 bg-yellow-400 rounded-3xl flex items-center justify-center mx-auto mb-8 text-4xl font-black shadow-xl text-slate-900">A</div>
-        <h2 class="text-2xl font-black uppercase italic tracking-tighter mb-2 text-slate-900">ALAMPE ERP</h2>
-        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-8">Acesso à Nuvem Alampe</p>
-        <input id="inputNomeLogin" placeholder="DIGITE SEU NOME" class="w-full p-6 border-2 border-slate-100 rounded-3xl mb-6 font-black text-center text-xl focus:border-yellow-400 outline-none uppercase text-slate-900">
-        <button type="button" onclick="window.confirmarLogin()" class="w-full bg-slate-900 text-white font-black py-6 rounded-3xl hover:bg-slate-800 transition-all uppercase tracking-widest shadow-xl text-sm">Entrar no Sistema</button>
+        <h2 class="text-2xl font-black uppercase italic tracking-tighter mb-2">ALAMPE ERP</h2>
+        <p class="text-slate-400 text-xs uppercase tracking-widest mb-8">Gestão de Peças Cloud</p>
+        <input id="inputNomeLogin" placeholder="DIGITE SEU NOME" class="w-full p-6 border-2 border-slate-100 rounded-3xl mb-6 font-black text-center text-xl focus:border-yellow-400 outline-none uppercase">
+        <button onclick="window.confirmarLogin()" class="w-full bg-slate-900 text-white font-black py-6 rounded-3xl hover:bg-slate-800 transition-all uppercase tracking-widest shadow-xl text-sm">Entrar no Sistema</button>
     </div>
 </div>
 
-<!-- SISTEMA ERP -->
 <div id="appScreen">
-    <div id="updateBanner" onclick="window.location.reload()">ATUALIZAÇÃO DISPONÍVEL! CLIQUE AQUI.</div>
+    <div id="updateBanner" class="fixed bottom-0 left-0 w-full bg-blue-600 text-white p-4 text-center z-[5000] font-black cursor-pointer hidden" onclick="window.location.reload()">ATUALIZAÇÃO DISPONÍVEL! CLIQUE AQUI.</div>
 
     <button id="homeFloatingBtn" class="no-print" onclick="window.location.reload()">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -99,462 +56,255 @@
 
     <div class="max-w-7xl mx-auto">
         <header class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4 bg-slate-900 p-6 rounded-[2rem] shadow-xl border-b-4 border-yellow-500 text-white">
-            <div class="flex items-center gap-4">
-                <div>
-                    <h1 class="text-2xl font-black italic uppercase tracking-tighter">ALAMPE <span class="text-yellow-400 font-black">ERP</span></h1>
-                    <div class="flex items-center gap-2 mt-1">
-                        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest border-r border-slate-700 pr-2" id="nomeVendedorDisplay">---</p>
-                        <span id="totalPecasBadge" class="text-yellow-400 px-2 py-0.5 rounded-md text-[9px] font-black border border-yellow-400/30 tracking-widest uppercase">ESTOQUE</span>
-                    </div>
+            <div>
+                <h1 class="text-2xl font-black italic uppercase tracking-tighter">ALAMPE <span class="text-yellow-400">ERP</span></h1>
+                <div class="flex items-center gap-2 mt-1">
+                    <p class="text-slate-400 text-[10px] uppercase border-r border-slate-700 pr-2" id="nomeVendedorDisplay">---</p>
+                    <span id="totalPecasBadge" class="text-yellow-400 px-2 py-0.5 rounded-md text-[9px] border border-yellow-400/30 uppercase font-black">ESTOQUE</span>
                 </div>
             </div>
             <div class="flex gap-2">
-                <button onclick="window.importarCatalogoAlampe()" class="bg-slate-800 text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase hover:bg-slate-700">Importar Base</button>
-                <button onclick="window.trocarVendedor()" class="bg-red-600 text-white px-6 py-2.5 rounded-xl text-[10px] font-black uppercase hover:bg-red-500 shadow-lg">Sair</button>
+                <button onclick="window.importarCatalogoAlampe()" class="bg-slate-800 px-4 py-2.5 rounded-xl text-[10px] uppercase hover:bg-slate-700 font-black">Importar Base</button>
+                <button onclick="window.trocarVendedor()" class="bg-red-600 px-6 py-2.5 rounded-xl text-[10px] uppercase hover:bg-red-500 shadow-lg font-black">Sair</button>
             </div>
         </header>
 
-        <div class="max-w-3xl mx-auto mb-12">
-            <label class="text-[11px] font-black text-slate-400 uppercase block mb-2 text-center tracking-[0.2em]">O que você procura hoje?</label>
-            <input id="busca" placeholder="PESQUISE PEÇA, CARRO OU COR..." class="w-full p-6 border-2 border-slate-200 rounded-3xl bg-white font-bold text-xl text-slate-900 shadow-xl focus:border-blue-500 outline-none transition-all" oninput="window.render()">
+        <div class="max-w-6xl mx-auto mb-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="text-[11px] text-slate-400 uppercase mb-2 block tracking-widest font-black">Estoque Interno</label>
+                <input id="busca" placeholder="PESQUISAR NO SISTEMA..." class="w-full p-6 border-2 border-slate-200 rounded-3xl bg-white text-lg shadow-xl focus:border-blue-500 outline-none font-bold" oninput="window.render()">
+            </div>
+            <div>
+                <label class="text-[11px] text-slate-400 uppercase mb-2 block tracking-widest font-black">Busca Técnica (Google)</label>
+                <div class="flex gap-2">
+                    <input id="buscaGoogle" placeholder="PESQUISAR NO GOOGLE..." class="flex-1 p-6 border-2 border-slate-200 rounded-3xl bg-white text-lg shadow-xl focus:border-blue-500 outline-none font-bold" onkeydown="if(event.key==='Enter') window.consultarGoogle()">
+                    <button onclick="window.consultarGoogle()" class="bg-slate-900 text-white px-8 rounded-3xl shadow-xl hover:bg-slate-800 font-black text-xl">🔍</button>
+                </div>
+            </div>
         </div>
 
-        <!-- PAINEL DASHBOARD COM 5 BOTÕES (BOTAO ZERAR REMOVIDO) -->
         <div id="homeDashboard" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 font-bold">
             <div onclick="window.verCatalogoCompleto()" class="dash-card">
-                <div class="dash-icon bg-green-100 text-green-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg></div>
-                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">ESTOQUE COMPLETO</h3><p class="text-xs text-slate-400 font-bold uppercase">Ver catálogo</p></div>
+                <div class="dash-icon bg-green-100 text-green-600">📦</div>
+                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">ESTOQUE COMPLETO</h3><p class="text-xs text-slate-400 uppercase font-black">Ver catálogo</p></div>
             </div>
             <div onclick="window.abrirOrcamento()" class="dash-card">
-                <div class="dash-icon bg-blue-100 text-blue-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
-                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">NOVO ORÇAMENTO</h3><p class="text-xs text-slate-400 font-bold uppercase">Gerar novo pedido</p></div>
+                <div class="dash-icon bg-blue-100 text-blue-600">📝</div>
+                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">NOVO ORÇAMENTO</h3><p class="text-xs text-slate-400 uppercase font-black">Gerar pedido</p></div>
             </div>
             <div onclick="window.abrirSucata()" class="dash-card">
-                <div class="dash-icon bg-red-100 text-red-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></div>
-                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">ENTRADA SUCATA</h3><p class="text-xs text-slate-400 font-bold uppercase">Desmonte pátio</p></div>
+                <div class="dash-icon bg-red-100 text-red-600">🚗</div>
+                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">ENTRADA SUCATA</h3><p class="text-xs text-slate-400 uppercase font-black">Desmonte pátio</p></div>
             </div>
             <div onclick="window.abrirHistorico()" class="dash-card">
-                <div class="dash-icon bg-slate-100 text-slate-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">HISTÓRICO VENDAS</h3><p class="text-xs text-slate-400 font-bold uppercase">Relatórios</p></div>
+                <div class="dash-icon bg-slate-100 text-slate-600">📜</div>
+                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">HISTÓRICO VENDAS</h3><p class="text-xs text-slate-400 uppercase font-black">Relatórios</p></div>
             </div>
             <div onclick="window.abrirCadastro()" class="dash-card">
-                <div class="dash-icon bg-yellow-100 text-yellow-600 font-bold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg></div>
-                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">CADASTRAR ITEM</h3><p class="text-xs text-slate-400 font-bold uppercase">Cadastro avulso</p></div>
+                <div class="dash-icon bg-yellow-100 text-yellow-600">➕</div>
+                <div class="text-center font-bold text-slate-900"><h3 class="font-black text-lg">CADASTRAR ITEM</h3><p class="text-xs text-slate-400 uppercase font-black">Cadastro avulso</p></div>
             </div>
         </div>
 
-        <!-- TABELA DE RESULTADOS -->
-        <div id="resultsArea" class="hidden">
-            <div class="flex justify-between items-center mb-4 text-slate-900 font-bold">
+        <div id="resultsArea" class="hidden font-bold">
+            <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-black uppercase italic">Itens em Estoque</h2>
-                <button onclick="document.getElementById('busca').value=''; window.mostrandoCatalogo=false; window.render()" class="text-blue-600 text-xs font-black uppercase font-black">← Voltar ao Painel</button>
+                <button onclick="document.getElementById('busca').value=''; window.mostrandoCatalogo=false; window.render()" class="text-blue-600 text-xs uppercase font-black font-black">← Voltar ao Painel</button>
             </div>
             <div class="erp-card overflow-hidden shadow-xl font-bold">
-                <table class="w-full text-sm text-left border-collapse text-slate-900 font-bold">
-                    <thead class="bg-slate-100 text-slate-500 font-black text-[10px] uppercase border-b text-slate-900">
+                <table class="w-full text-sm text-left border-collapse text-slate-900">
+                    <thead class="bg-slate-100 text-slate-500 uppercase text-[10px] font-black border-b">
                         <tr><th class="p-5">Peça</th><th class="p-5">Aplicação</th><th class="p-5 text-center">Lado/Pos.</th><th class="p-5 text-center">Cor</th><th class="p-5 text-center">Valor</th><th class="p-5 text-center">Estoque</th><th class="p-5 text-right">Ações</th></tr>
                     </thead>
-                    <tbody id="tabela" class="divide-y divide-slate-100 font-bold text-slate-900"></tbody>
+                    <tbody id="tabela" class="divide-y divide-slate-100 font-bold"></tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-<!-- CHAT INTERNO -->
-<div id="painelChat" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white shadow-2xl flex flex-col border-l border-slate-200 text-slate-900 font-bold z-[10000]">
+<div id="painelChat" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white shadow-2xl flex flex-col border-l border-slate-200 z-[10000] font-bold">
     <div class="bg-indigo-600 p-6 text-white flex justify-between items-center">
-        <div><h3 class="font-black uppercase italic tracking-tighter text-xl">Chat Equipe</h3><p class="text-[10px] font-bold uppercase opacity-70">Mensagens em Tempo Real</p></div>
-        <button onclick="window.toggleChat()" class="p-2 hover:bg-indigo-500 rounded-full text-white font-black text-xl">✕</button>
+        <div><h3 class="font-black uppercase italic text-xl">Chat Equipe</h3><p class="text-[10px] uppercase opacity-70 font-black">Mensagens Cloud</p></div>
+        <button onclick="window.toggleChat()" class="p-2 text-xl font-black">✕</button>
     </div>
     <div id="corpoChat" class="flex-1 overflow-y-auto p-6 flex flex-col gap-2 bg-slate-50"></div>
-    <div class="p-4 bg-white border-t">
-        <div class="flex gap-2">
-            <input id="inputChat" placeholder="Sua mensagem..." class="flex-1 p-4 border rounded-2xl font-bold text-sm outline-none focus:border-indigo-500 text-slate-900">
-            <button onclick="window.enviarMsgChat()" class="bg-indigo-600 text-white p-4 rounded-2xl shadow-lg font-bold font-black">➤</button>
-        </div>
+    <div class="p-4 bg-white border-t flex gap-2">
+        <input id="inputChat" placeholder="Sua mensagem..." class="flex-1 p-4 border rounded-2xl outline-none focus:border-indigo-500 font-bold">
+        <button onclick="window.enviarMsgChat()" class="bg-indigo-600 text-white p-4 rounded-2xl shadow-lg font-black">➤</button>
     </div>
 </div>
 
-<!-- BOTÃO DO CHAT -->
 <div id="chatFloatingBtn" class="no-print" onclick="window.toggleChat()">
     <div id="chatNotifBadge" class="hidden">0</div>
     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
 </div>
 
-<!-- MODAL ORÇAMENTO -->
-<div id="modalOrcamento" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[1500] p-2 md:p-6 no-print text-slate-900 font-bold" onclick="if(event.target===this) hideModal('modalOrcamento')">
-    <div class="modal-inner bg-white rounded-[2.5rem] w-full max-w-[1200px] max-h-[95vh] flex flex-col shadow-2xl overflow-hidden font-bold" onclick="event.stopPropagation()">
-        <div class="bg-slate-50 p-5 border-b flex justify-between items-center shrink-0">
-            <h2 class="text-xl font-black uppercase italic">GERAR ORÇAMENTO</h2>
-            <button onclick="hideModal('modalOrcamento')" class="text-slate-300 hover:text-red-500 font-black">✕</button>
-        </div>
+<!-- MODAIS -->
+<div id="modalOrcamento" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[1500] p-4 no-print font-bold" onclick="if(event.target===this) hideModal('modalOrcamento')">
+    <div class="modal-inner bg-white rounded-[2.5rem] w-full max-w-6xl max-h-[95vh] flex flex-col shadow-2xl overflow-hidden">
+        <div class="bg-slate-50 p-5 border-b flex justify-between items-center"><h2 class="text-xl font-black uppercase italic">Gerar Orçamento</h2><button onclick="hideModal('modalOrcamento')" class="text-xl font-black">✕</button></div>
         <div class="flex-1 overflow-y-auto p-6 space-y-6">
-            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 shadow-sm font-bold">
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                    <div class="md:col-span-10 font-bold"><label class="text-[10px] uppercase">Veículo</label><input id="orc_veiculo" class="w-full p-3 border rounded-xl font-bold" placeholder="EX: ONIX 1.0" oninput="window.filtrarOrc()"></div>
-                    <div class="md:col-span-2 font-bold"><label class="text-[10px] uppercase">Câmbio</label><select id="orc_cambio" class="w-full p-3 border rounded-xl font-bold"><option>MANUAL</option><option>AUTOMÁTICO</option></select></div>
-                    <div class="md:col-span-4 font-bold"><label class="text-[10px] uppercase">Cliente</label><input id="orc_cliente" class="w-full p-3 border rounded-xl font-bold"></div>
-                    <div class="md:col-span-8 font-bold"><label class="text-[10px] uppercase">Endereço Entrega</label><input id="orc_endereco" class="w-full p-3 border rounded-xl font-bold"></div>
-                </div>
+            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 grid grid-cols-1 md:grid-cols-12 gap-4">
+                <div class="md:col-span-10 font-bold"><label class="text-[10px] uppercase text-slate-400 block mb-1 font-black">Veículo</label><input id="orc_veiculo" class="w-full p-3 border rounded-xl font-bold" oninput="window.filtrarOrc()"></div>
+                <div class="md:col-span-2 font-bold"><label class="text-[10px] uppercase text-slate-400 block mb-1 font-black">Câmbio</label><select id="orc_cambio" class="w-full p-3 border rounded-xl font-bold"><option>MANUAL</option><option>AUTOMÁTICO</option></select></div>
+                <div class="md:col-span-4 font-bold"><label class="text-[10px] uppercase text-slate-400 block mb-1 font-black">Cliente</label><input id="orc_cliente" class="w-full p-3 border rounded-xl font-bold"></div>
+                <div class="md:col-span-8 font-bold"><label class="text-[10px] uppercase text-slate-400 block mb-1 font-black">Endereço Entrega</label><input id="orc_endereco" class="w-full p-3 border rounded-xl font-bold"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-                <div class="md:col-span-4"><label class="text-blue-600 font-black mb-2 uppercase text-[10px]">Adicionar Peças</label><input id="buscaOrc" placeholder="PESQUISAR..." class="w-full p-4 border-2 border-blue-100 rounded-2xl font-bold bg-white text-slate-900 uppercase" oninput="window.filtrarOrc()"><div id="resBuscaOrc" class="mt-4 space-y-2 max-h-[300px] overflow-y-auto"></div></div>
-                <div class="md:col-span-8"><div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm font-bold"><table class="w-full text-sm font-bold"><thead class="bg-slate-100 text-slate-400 font-black text-[9px] uppercase"><tr><th class="p-4 text-left text-slate-900">ITEM</th><th class="p-4 text-center text-slate-900">QTD</th><th class="p-4 text-right text-slate-900">VALOR</th><th class="p-4 text-right text-slate-900">TOTAL</th><th class="p-4"></th></tr></thead><tbody id="tbodyOrc" class="divide-y text-slate-900"></tbody></table><div class="p-6 bg-slate-50 flex justify-between items-center border-t"><span class="text-xs font-black text-slate-400 uppercase">Total Final</span><span id="totalOrc" class="text-4xl font-black tracking-tighter text-slate-900 font-black">R$ 0,00</span></div></div></div>
+                <div class="md:col-span-4"><input id="buscaOrc" placeholder="PESQUISAR PEÇA..." class="w-full p-4 border-2 border-blue-100 rounded-2xl font-bold uppercase" oninput="window.filtrarOrc()"><div id="resBuscaOrc" class="mt-4 space-y-2 max-h-[300px] overflow-y-auto"></div></div>
+                <div class="md:col-span-8 border rounded-3xl overflow-hidden font-bold text-slate-900"><table class="w-full text-sm"><thead class="bg-slate-100 uppercase text-[9px] font-black"><tr><th class="p-4 text-left">Item</th><th class="p-4 text-center">Qtd</th><th class="p-4 text-right">Preço</th><th class="p-4 text-right">Total</th><th class="p-4"></th></tr></thead><tbody id="tbodyOrc" class="divide-y"></tbody></table><div class="p-6 bg-slate-50 flex justify-between items-center"><span class="text-xs uppercase opacity-50 font-black">Total Final</span><span id="totalOrc" class="text-4xl font-black">R$ 0,00</span></div></div>
             </div>
         </div>
-        <div class="bg-slate-50 p-6 border-t flex justify-end gap-3 shrink-0">
-            <button type="button" onclick="hideModal('modalOrcamento')" class="text-slate-400 font-bold px-6 uppercase text-xs">Sair</button>
-            <button type="button" onclick="window.finalizarVenda()" class="bg-green-600 text-white font-black px-16 py-4 rounded-2xl shadow-xl uppercase text-sm active:scale-95 shadow-lg">Imprimir PDF</button>
-        </div>
+        <div class="bg-slate-50 p-6 border-t flex justify-end gap-3"><button onclick="hideModal('modalOrcamento')" class="px-6 text-xs uppercase font-black text-slate-400">Sair</button><button onclick="window.finalizarVenda()" class="bg-green-600 text-white font-black px-12 py-4 rounded-2xl shadow-xl uppercase font-black">Imprimir PDF</button></div>
     </div>
 </div>
 
-<!-- MODAL SUCATA -->
-<div id="modalSucata" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-md flex items-center justify-center z-[1500] p-2 md:p-6 no-print text-slate-900 font-bold" onclick="if(event.target===this) hideModal('modalSucata')">
-    <div class="modal-inner bg-white rounded-[2.5rem] w-full max-w-6xl max-h-[95vh] flex flex-col shadow-2xl overflow-hidden font-bold" onclick="event.stopPropagation()">
-        <div class="bg-slate-900 p-6 flex justify-between items-center text-white text-yellow-400 font-black uppercase italic">DESMONTE DE SUCATA NO PÁTIO</div>
-        <div class="flex-1 overflow-y-auto p-6 md:p-10 text-slate-900">
-            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8 bg-slate-50 p-6 rounded-3xl border border-slate-200 font-bold text-slate-900">
-                <div><label class="text-[10px] uppercase">Fabricante</label><input id="suc_fabricante" class="w-full p-3 border rounded-xl font-bold"></div>
-                <div><label class="text-[10px] uppercase">Veículo</label><input id="suc_veiculo" class="w-full p-3 border rounded-xl font-bold"></div>
-                <div><label class="text-[10px] uppercase">Ano</label><input id="suc_anos" class="w-full p-3 border rounded-xl font-bold"></div>
-                <div><label class="text-[10px] uppercase">Motor</label><input id="suc_motor" class="w-full p-3 border rounded-xl font-bold"></div>
-                <div><label class="text-[10px] uppercase">Câmbio</label><select id="suc_cambio" class="w-full p-3 border rounded-xl font-bold"><option>MANUAL</option><option>AUTOMÁTICO</option></select></div>
-                <div><label class="text-[10px] uppercase">Cor</label><input id="suc_cor" class="w-full p-3 border rounded-xl font-bold"></div>
-                <div class="md:col-span-6 mt-2"><button onclick="window.gerarListaPeçasSucata()" class="bg-slate-900 text-yellow-400 font-black px-8 py-4 rounded-2xl w-full uppercase shadow-xl font-bold hover:bg-slate-800">1. Gerar Catálogo Automático</button></div>
+<div id="modalSucata" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-md flex items-center justify-center z-[1500] p-4 no-print font-bold" onclick="if(event.target===this) hideModal('modalSucata')">
+    <div class="modal-inner bg-white rounded-[2.5rem] w-full max-w-6xl max-h-[95vh] flex flex-col shadow-2xl overflow-hidden font-bold">
+        <div class="bg-slate-900 p-6 text-yellow-400 font-black uppercase italic">Desmonte de Sucata</div>
+        <div class="flex-1 overflow-y-auto p-6 md:p-10 space-y-6">
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-4 bg-slate-50 p-6 rounded-3xl border border-slate-200 font-bold">
+                <div><label class="text-[10px] uppercase text-slate-400 block mb-1 font-black">Fabricante</label><input id="suc_fabricante" class="w-full p-3 border rounded-xl font-bold"></div>
+                <div><label class="text-[10px] uppercase text-slate-400 block mb-1 font-black">Veículo</label><input id="suc_veiculo" class="w-full p-3 border rounded-xl font-bold"></div>
+                <div><label class="text-[10px] uppercase text-slate-400 block mb-1 font-black">Ano</label><input id="suc_anos" class="w-full p-3 border rounded-xl font-bold"></div>
+                <div><label class="text-[10px] uppercase text-slate-400 block mb-1 font-black">Motor</label><input id="suc_motor" class="w-full p-3 border rounded-xl font-bold"></div>
+                <div><label class="text-[10px] uppercase text-slate-400 block mb-1 font-black">Câmbio</label><select id="suc_cambio" class="w-full p-3 border rounded-xl font-bold"><option>MANUAL</option><option>AUTOMÁTICO</option></select></div>
+                <div><label class="text-[10px] uppercase text-slate-400 block mb-1 font-black">Cor</label><input id="suc_cor" class="w-full p-3 border rounded-xl font-bold"></div>
+                <div class="md:col-span-6 mt-2"><button onclick="window.gerarListaPeçasSucata()" class="bg-slate-900 text-yellow-400 font-black w-full py-4 rounded-2xl uppercase shadow-xl hover:bg-slate-800 font-black">1. Gerar Catálogo Automático</button></div>
             </div>
-            <div id="containerPeçasSucata" class="hidden text-slate-900"><div id="listaPeçasSucata" class="space-y-8"></div><div class="mt-12 bg-slate-900 p-8 rounded-3xl text-center"><button onclick="window.finalizarEntradaSucata()" class="bg-yellow-500 text-slate-900 font-black px-12 py-5 rounded-3xl uppercase text-lg shadow-2xl font-black">3. Cadastrar Tudo Cloud</button></div></div>
+            <div id="containerPeçasSucata" class="hidden"><div id="listaPeçasSucata" class="space-y-8 font-bold"></div><div class="mt-12 text-center"><button onclick="window.finalizarEntradaSucata()" class="bg-yellow-500 text-slate-900 font-black px-12 py-5 rounded-3xl uppercase text-lg shadow-2xl font-black">3. Cadastrar Tudo Cloud</button></div></div>
         </div>
     </div>
 </div>
 
-<!-- MODAL HISTÓRICO -->
-<div id="modalHistorico" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[1500] p-4 no-print text-slate-900 font-bold" onclick="if(event.target===this) hideModal('modalHistorico')">
-    <div class="modal-inner bg-white p-8 rounded-3xl w-full max-w-3xl shadow-2xl font-bold" onclick="event.stopPropagation()">
-        <h2 class="text-xl font-black mb-6 uppercase italic border-b pb-4 text-slate-900">Histórico de Vendas</h2>
-        <div id="listaHist" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2 text-slate-900"></div>
-        <div class="flex justify-end mt-6"><button type="button" onclick="hideModal('modalHistorico')" class="bg-slate-900 text-white px-8 py-2 rounded-xl text-xs font-bold uppercase font-black">Fechar</button></div>
-    </div>
-</div>
-
-<!-- MODAL CADASTRO INDIVIDUAL -->
-<div id="modalCadastro" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[1500] p-4 no-print text-slate-900 font-bold" onclick="if(event.target===this) hideModal('modalCadastro')">
-    <div class="modal-inner bg-white p-8 rounded-3xl w-full max-w-lg shadow-2xl font-bold" onclick="event.stopPropagation()">
-        <h2 class="text-xl font-black mb-6 uppercase italic border-b pb-4 text-slate-900 font-black">Gerenciar Item Manual</h2>
-        <div class="space-y-4 text-slate-900 font-bold">
-            <input id="nomePeca" class="w-full p-4 border rounded-xl bg-slate-50 font-bold text-slate-900" placeholder="NOME DA PEÇA">
-            <textarea id="aplicacaoPeca" rows="2" class="w-full p-4 border rounded-xl bg-slate-50 font-bold text-blue-700" placeholder="APLICAÇÃO"></textarea>
-            <div class="grid grid-cols-2 gap-4"><select id="lado" class="w-full p-3 border rounded-xl bg-slate-50 font-bold"><option>N/D</option><option>ESQUERDO</option><option>DIREITO</option><option>O PAR</option></select><select id="posicao" class="w-full p-3 border rounded-xl bg-slate-50 font-bold"><option>N/D</option><option>DIANTEIRO</option><option>TRASEIRO</option></select></div>
-            <div class="grid grid-cols-2 gap-4"><select id="cambioPeca" class="w-full p-3 border rounded-xl bg-slate-50 font-bold"><option>N/D</option><option>MANUAL</option><option>AUTOMÁTICO</option></select><input id="corPeca" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900" placeholder="COR DA PEÇA"></div>
-            <div class="grid grid-cols-3 gap-4"><select id="estado" class="w-full p-3 border rounded-xl bg-slate-50 font-bold"><option>NOVO</option><option>USADO</option><option>RECUPERADO</option></select><input id="valorPeca" class="w-full p-3 border rounded-xl bg-slate-50 font-bold" placeholder="VALOR"><input id="qtdPeca" type="number" class="w-full p-3 border rounded-xl bg-slate-50 font-bold" value="1"></div>
-            <div class="flex justify-end gap-3 pt-6 border-t"><button type="button" onclick="hideModal('modalCadastro')" class="px-6 font-bold text-slate-400 uppercase text-xs">Sair</button><button type="button" onclick="window.salvarFormPeca()" class="bg-yellow-500 px-8 py-3 rounded-2xl font-black uppercase shadow-lg text-white">Salvar Peça</button></div>
+<div id="modalCadastro" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[1500] p-4 no-print font-bold" onclick="if(event.target===this) hideModal('modalCadastro')">
+    <div class="modal-inner bg-white p-8 rounded-3xl w-full max-w-lg shadow-2xl space-y-4 font-bold">
+        <h2 class="text-xl font-black uppercase italic border-b pb-4">Gerenciar Item</h2>
+        <div><label class="text-[10px] text-slate-400 uppercase font-black block mb-1">Nome da Peça</label><input id="nomePeca" class="w-full p-4 border rounded-xl bg-slate-50 font-bold text-slate-900"></div>
+        <div><label class="text-[10px] text-slate-400 uppercase font-black block mb-1">Aplicação / Veículo</label><textarea id="aplicacaoPeca" rows="2" class="w-full p-4 border rounded-xl bg-slate-50 font-bold text-blue-700"></textarea></div>
+        <div class="grid grid-cols-2 gap-4">
+            <div><label class="text-[10px] text-slate-400 uppercase font-black block mb-1">Lado</label><select id="lado" class="w-full p-3 border rounded-xl bg-slate-50 font-bold"><option>N/D</option><option>ESQUERDO</option><option>DIREITO</option><option>O PAR</option></select></div>
+            <div><label class="text-[10px] text-slate-400 uppercase font-black block mb-1">Posição</label><select id="posicao" class="w-full p-3 border rounded-xl bg-slate-50 font-bold"><option>N/D</option><option>DIANTEIRO</option><option>TRASEIRO</option></select></div>
         </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div><label class="text-[10px] text-slate-400 uppercase font-black block mb-1">Transmissão</label><select id="cambioPeca" class="w-full p-3 border rounded-xl bg-slate-50 font-bold"><option>N/D</option><option>MANUAL</option><option>AUTOMÁTICO</option></select></div>
+            <div><label class="text-[10px] text-slate-400 uppercase font-black block mb-1">Cor</label><input id="corPeca" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-4 font-bold">
+            <div><label class="text-[10px] text-slate-400 uppercase font-black block mb-1">Estado</label><select id="estado" class="w-full p-3 border rounded-xl bg-slate-50 font-bold"><option>NOVO</option><option>USADO</option><option>RECUPERADO</option></select></div>
+            <div><label class="text-[10px] text-slate-400 uppercase font-black block mb-1">Preço</label><input id="valorPeca" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900"></div>
+            <div><label class="text-[10px] text-slate-400 uppercase font-black block mb-1">Qtd</label><input id="qtdPeca" type="number" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900" value="1"></div>
+        </div>
+        <div class="flex justify-end gap-3 pt-6 border-t"><button onclick="hideModal('modalCadastro')" class="text-xs uppercase font-black text-slate-400">Sair</button><button onclick="window.salvarFormPeca()" class="bg-yellow-500 px-8 py-3 rounded-2xl font-black uppercase shadow-lg text-slate-900">Salvar Peça</button></div>
     </div>
-</div>
-
-<!-- VISUALIZAÇÃO PDF -->
-<div id="modalVisualizarOrcamento" class="hidden fixed inset-0 z-[2500] overflow-y-auto p-4 md:p-10 font-bold text-slate-900">
-    <div class="max-w-4xl mx-auto font-bold text-slate-900"><div class="flex justify-between items-center mb-6 no-print font-bold"><button onclick="hideModal('modalVisualizarOrcamento')" class="bg-slate-700 text-white px-6 py-2 rounded-xl font-bold uppercase text-[10px] text-white">← VOLTAR</button><div class="flex gap-2 font-bold"><button onclick="window.print()" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold uppercase text-[10px] shadow-lg">IMPRIMIR</button><button id="btnBaixarPDF" class="bg-red-600 text-white px-6 py-2 rounded-xl font-bold uppercase text-[10px] shadow-lg">PDF</button></div></div><div class="doc-paper shadow-2xl font-bold text-slate-900" id="folhaOrcamento"><div class="doc-header-box"><div><h1 class="text-3xl font-black uppercase tracking-tighter">ALAMPE</h1><p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-black">COMERCIO DE PEÇAS</p></div><div class="text-right"><div class="text-xl font-black uppercase border-b-2 border-black pb-1 mb-1 font-black text-slate-900">ORÇAMENTO</div><div class="text-[11px] font-bold" id="viewDataOrc">00/00/0000</div></div></div><div class="doc-section-title font-black text-white font-black">Dados do Cliente</div><div class="doc-grid mb-4 font-bold text-slate-900"><div class="doc-grid-item col-span-2 font-bold text-slate-900"><label>Cliente</label><span id="viewCliente">---</span></div><div class="doc-grid-item col-span-2 font-bold text-slate-900"><label>Entrega</label><span id="viewEnderecoDoc" class="uppercase font-black">---</span></div></div><div class="doc-section-title font-black text-white">Ficha do Veículo</div><div class="doc-grid mb-6 font-bold text-slate-900"><div class="doc-grid-item col-span-2 font-bold text-slate-900"><label>Veículo</label><span id="viewVeiculo">---</span></div><div class="doc-grid-item font-bold text-slate-900"><label>Placa</label><span id="viewPlaca">---</span></div></div><table class="doc-table font-bold text-slate-900"><thead><tr><th style="width: 50%; font-weight: 900;">PRODUTO / DESCRIÇÃO</th><th style="text-align: center; width: 10%; font-weight: 900;">QTD</th><th style="text-align: right; width: 20%; font-weight: 900;">UNITÁRIO</th><th style="text-align: right; width: 20%; font-weight: 900;">TOTAL</th></tr></thead><tbody id="viewCorpoTabela"></tbody></table><div class="doc-footer-box text-slate-900 font-bold"><div class="total-box font-bold font-black text-slate-900"><span class="text-[10px] font-black uppercase block text-slate-900 font-black">TOTAL FINAL</span><span id="viewTotalGeral" class="text-3xl font-black mono text-slate-900 font-black">R$ 0,00</span></div></div></div></div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, doc, addDoc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyCwrQ4wn7Cs6LZGpk-yt1pu4GqGf95BSmI",
-        authDomain: "alampe-erp.firebaseapp.com",
-        projectId: "alampe-erp",
-        storageBucket: "alampe-erp.appspot.com",
-        messagingSenderId: "1006284667070",
-        appId: "1:1006284667070:web:f57c5900043c82b22b06ef"
-    };
-
+    const firebaseConfig = { apiKey: "AIzaSyCwrQ4wn7Cs6LZGpk-yt1pu4GqGf95BSmI", authDomain: "alampe-erp.firebaseapp.com", projectId: "alampe-erp", storageBucket: "alampe-erp.appspot.com", messagingSenderId: "1006284667070", appId: "1:1006284667070:web:f57c5900043c82b22b06ef" };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
     const appId = firebaseConfig.projectId;
 
     window.pecas = []; window.orcamentosHistorico = []; window.mensagensChat = []; window.itensCart = []; 
-    window.editandoId = null; window.editandoOrcamentoId = null;
     let operadorAtual = localStorage.getItem('alampe_operador') || "";
-    window.totalMsgsAnterior = 0;
-    window.mostrandoCatalogo = false;
-    let initialChatLoad = true; 
+    window.totalMsgsAnterior = 0; window.mostrandoCatalogo = false; let initialChatLoad = true;
 
-    // BANCO DE DADOS
     window.dbFunctions = {
-        async salvarPeca(obj) {
-            if (window.editandoId) { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'pecas', window.editandoId), obj); } 
-            else { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'pecas'), obj); }
-        },
+        async salvarPeca(o) { if (window.editandoId) { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'pecas', window.editandoId), o); } else { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'pecas'), o); } },
         async excluirPeca(id) { if(confirm("Excluir item?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'pecas', id)); },
-        async salvarOrcamento(orc) {
-            if (window.editandoOrcamentoId) { return await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orcamentos', window.editandoOrcamentoId), orc); } 
-            else { return await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'orcamentos'), orc); }
-        },
+        async salvarOrcamento(o) { if (window.editandoOrcamentoId) { return await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orcamentos', window.editandoOrcamentoId), o); } else { return await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'orcamentos'), o); } },
         async excluirOrcamento(id) { if(confirm("Apagar orçamento?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orcamentos', id)); },
-        async enviarMensagem(msg) { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'chat'), msg); }
+        async enviarMensagem(m) { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'chat'), m); }
     };
 
-    // PEDIR PERMISSÃO PARA NOTIFICAÇÕES
-    async function requestNotificationPermission() {
-        if (!("Notification" in window)) return;
-        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-            await Notification.requestPermission();
-        }
-    }
-
-    // LOGIN E INTERFACE
     window.confirmarLogin = () => {
-        const nome = document.getElementById('inputNomeLogin').value.trim();
-        if (!nome) return alert("Digite seu nome!");
-        operadorAtual = nome.toUpperCase();
-        localStorage.setItem('alampe_operador', operadorAtual);
-        document.getElementById('loginScreen').style.display = "none";
-        document.getElementById('appScreen').style.display = "block";
-        document.getElementById('nomeVendedorDisplay').innerText = "VENDEDOR(A): " + operadorAtual;
-        requestNotificationPermission();
+        const n = document.getElementById('inputNomeLogin').value.trim();
+        if (!n) return alert("Digite seu nome!");
+        operadorAtual = n.toUpperCase(); localStorage.setItem('alampe_operador', operadorAtual);
+        document.getElementById('loginScreen').style.display = "none"; document.getElementById('appScreen').style.display = "block";
+        const d = document.getElementById('nomeVendedorDisplay'); if(d) d.innerText = "VENDEDOR(A): " + operadorAtual;
+        if ("Notification" in window && Notification.permission !== "granted") Notification.requestPermission();
     };
 
-    window.showModal = (mId) => { const m = document.getElementById(mId); if(!m) return; m.classList.remove('hidden'); setTimeout(()=>m.querySelector('.modal-inner')?.classList.add('scale-100'), 10); };
-    window.hideModal = (mId) => { const m = typeof mId === 'string' ? document.getElementById(mId) : mId; if(!m) return; m.querySelector('.modal-inner')?.classList.remove('scale-100'); setTimeout(()=>m.classList.add('hidden'), 200); };
+    window.showModal = (id) => { const m = document.getElementById(id); if(m){ m.classList.remove('hidden'); setTimeout(()=>m.querySelector('.modal-inner')?.classList.add('scale-100'), 10); } };
+    window.hideModal = (id) => { const m = document.getElementById(id); if(m){ m.querySelector('.modal-inner')?.classList.remove('scale-100'); setTimeout(()=>m.classList.add('hidden'), 200); } };
     window.trocarVendedor = () => { localStorage.removeItem('alampe_operador'); location.reload(); };
     window.verCatalogoCompleto = () => { window.mostrandoCatalogo = true; document.getElementById('busca').value = ''; window.render(); };
-    window.normalizar = (str) => (str || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    window.normalizar = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
     window.formatMoney = (v) => 'R$ ' + parseFloat(String(v).replace('R$ ', '').replace(',', '.')).toFixed(2).replace('.', ',');
     window.parseMoney = (s) => { if(!s) return 0; return parseFloat(String(s).replace('R$ ', '').replace(',', '.')) || 0; };
+    window.consultarGoogle = () => { const q = document.getElementById('buscaGoogle').value.trim(); if(q) window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, '_blank'); };
 
     window.render = () => {
-        const tb = document.getElementById('tabela'); if(!tb) return;
-        const dash = document.getElementById('homeDashboard');
-        const results = document.getElementById('resultsArea');
-        const buscaValue = (document.getElementById('busca').value || '').trim();
-        if(buscaValue === "" && !window.mostrandoCatalogo) { dash.classList.remove('hidden'); results.classList.add('hidden'); return; } 
+        const tb = document.getElementById('tabela'); const dash = document.getElementById('homeDashboard'); const results = document.getElementById('resultsArea');
+        if(!tb || !dash || !results) return;
+        const v = (document.getElementById('busca').value || '').trim();
+        if(v === "" && !window.mostrandoCatalogo) { dash.classList.remove('hidden'); results.classList.add('hidden'); return; } 
         else { dash.classList.add('hidden'); results.classList.remove('hidden'); }
-        tb.innerHTML = '';
-        const f = window.normalizar(buscaValue);
+        tb.innerHTML = ''; const f = window.normalizar(v);
         window.pecas.forEach((p, i) => {
-            const textoPeca = window.normalizar(p.nome + ' ' + p.aplicacao + ' ' + (p.cor || ''));
-            if(f === "" || textoPeca.includes(f)){
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 border-b uppercase text-xs font-bold text-slate-900";
-                tr.innerHTML = `<td class="p-5 font-black">${p.nome}</td><td class="p-5 text-blue-700 font-bold">${p.aplicacao}</td><td class="p-5 text-center text-[10px] text-slate-400 font-black font-black font-black font-black">${p.lado || 'N/D'} / ${p.posicao || 'N/D'}</td><td class="p-5 text-center font-black font-black font-black font-black font-black font-black"><span class="tag-cor">${p.cor || '---'}</span></td><td class="p-5 text-center font-black font-black font-black font-black font-black font-black font-black">${p.valor}</td><td class="p-5 text-center font-black font-black font-black font-black font-black font-black font-black font-black">${p.qtd} UN</td><td class="p-5 text-right flex gap-1 justify-end font-black"><button type="button" onclick="window.copiarWPP(${i})" class="bg-green-600 text-white p-2.5 rounded-xl text-[9px] font-black font-black font-black font-black">WPP</button><button type="button" onclick="window.abrirEditar('${p.id}')" class="bg-slate-100 p-2.5 rounded-xl text-[9px] font-black hover:bg-yellow-400 shadow-sm text-slate-900 font-black font-black">EDIT</button><button type="button" onclick="window.dbFunctions.excluirPeca('${p.id}')" class="text-red-400 p-2.5 font-black">✕</button></td>`;
+            if(f === "" || window.normalizar(p.nome + ' ' + p.aplicacao + ' ' + (p.cor||'')).includes(f)){
+                const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 border-b uppercase";
+                tr.innerHTML = `<td class="p-5 font-black">${p.nome}</td><td class="p-5 text-blue-700 font-bold">${p.aplicacao}</td><td class="p-5 text-center text-[10px] opacity-50 font-black">${p.lado||'N/D'} / ${p.posicao||'N/D'}</td><td class="p-5 text-center"><span class="tag-cor font-black">${p.cor||'---'}</span></td><td class="p-5 text-center font-black">${p.valor}</td><td class="p-5 text-center font-black">${p.qtd} UN</td><td class="p-5 text-right flex gap-1 justify-end"><button onclick="window.copiarWPP(${i})" class="bg-green-600 text-white p-2 rounded-xl text-[9px] font-black">WPP</button><button onclick="window.abrirEditar('${p.id}')" class="bg-slate-100 p-2 rounded-xl text-[9px] hover:bg-yellow-400 font-black">EDIT</button><button onclick="window.dbFunctions.excluirPeca('${p.id}')" class="text-red-400 p-2">✕</button></td>`;
                 tb.appendChild(tr);
             }
         });
     };
 
-    // CHAT FUNÇÕES
-    window.toggleChat = () => { 
-        const painel = document.getElementById('painelChat'); 
-        if (!painel) return; 
-        painel.classList.toggle('aberto'); 
-        if (painel.classList.contains('aberto')) { 
-            const btnChat = document.getElementById('chatFloatingBtn'); 
-            const badgeNotif = document.getElementById('chatNotifBadge'); 
-            if (btnChat) btnChat.classList.remove('animate-bounce'); 
-            if (badgeNotif) badgeNotif.classList.add('hidden'); 
-            window.totalMsgsAnterior = window.mensagensChat.length; 
-            window.renderChat();
-        } 
-    };
-    window.enviarMsgChat = async () => { 
-        const input = document.getElementById('inputChat'); 
-        const texto = input.value.trim(); 
-        if(!texto) return; 
-        await window.dbFunctions.enviarMensagem({ 
-            texto: texto, 
-            remetente: operadorAtual, 
-            dataISO: new Date().toISOString(), 
-            hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
-        }); 
-        input.value = ''; 
-    };
-    window.renderChat = () => { 
-        const corpo = document.getElementById('corpoChat'); 
-        if(!corpo) return;
-        corpo.innerHTML = ''; 
-        window.mensagensChat.forEach(m => { 
-            const eMeu = m.remetente === operadorAtual; 
-            const div = document.createElement('div'); 
-            div.className = eMeu ? 'msg-eu shadow-sm font-bold text-slate-900' : 'msg-vendedor shadow-sm font-bold text-slate-900 font-bold'; 
-            div.innerHTML = `<p class="text-[9px] font-black uppercase opacity-50 mb-1 font-bold">${m.remetente}</p><p class="text-sm font-bold">${m.texto}</p><p class="text-[8px] text-right mt-1 opacity-40 font-bold">${m.hora}</p>`; 
-            corpo.appendChild(div); 
-        }); 
-        corpo.scrollTop = corpo.scrollHeight; 
-    };
+    window.toggleChat = () => { const p = document.getElementById('painelChat'); if(p){ p.classList.toggle('aberto'); if (p.classList.contains('aberto')) { const bt = document.getElementById('chatFloatingBtn'); if(bt) bt.classList.remove('animate-bounce'); const bn = document.getElementById('chatNotifBadge'); if(bn) bn.classList.add('hidden'); window.totalMsgsAnterior = window.mensagensChat.length; window.renderChat(); } } };
+    window.enviarMsgChat = async () => { const i = document.getElementById('inputChat'); const t = i?.value.trim(); if(!t) return; await window.dbFunctions.enviarMensagem({ texto: t, remetente: operadorAtual, dataISO: new Date().toISOString(), hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }); if(i) i.value = ''; };
+    window.renderChat = () => { const c = document.getElementById('corpoChat'); if(!c) return; c.innerHTML = ''; window.mensagensChat.forEach(m => { const e = m.remetente === operadorAtual; const d = document.createElement('div'); d.className = e ? 'msg-eu shadow-sm' : 'msg-vendedor shadow-sm'; d.innerHTML = `<p class="text-[9px] uppercase opacity-50 mb-1 font-black">${m.remetente}</p><p class="text-sm font-bold">${m.texto}</p><p class="text-[8px] text-right mt-1 opacity-40 font-black">${m.hora}</p>`; c.appendChild(d); }); c.scrollTop = c.scrollHeight; };
 
-    // ORÇAMENTO FUNÇÕES
-    window.abrirOrcamento = () => { window.editandoOrcamentoId = null; ["orc_cliente", "orc_veiculo", "orc_endereco", "buscaOrc"].forEach(id => document.getElementById(id).value = ''); window.itensCart=[]; document.getElementById('resBuscaOrc').innerHTML = ''; window.renderItensOrc(); window.showModal('modalOrcamento'); };
-    window.renderItensOrc = () => { const body = document.getElementById('tbodyOrc'); body.innerHTML = ''; let t = 0; window.itensCart.forEach((p, i) => { const s = window.parseMoney(p.valor) * p.qtdCart; t += s; const tr = document.createElement('tr'); tr.innerHTML = `<td class="p-4 font-bold text-xs text-slate-900">${p.nome}<br><span class="text-[9px] text-blue-600">${p.aplicacao}</span></td><td class="p-4 text-center font-bold">${p.qtdCart}</td><td class="p-4 text-right font-bold">${p.valor}</td><td class="p-4 text-right font-black">${window.formatMoney(s)}</td><td class="p-4 text-center"><button type="button" onclick="window.itensCart.splice(${i},1);window.renderItensOrc()" class="text-red-400 font-bold">✕</button></td>`; body.appendChild(tr); }); document.getElementById('totalOrc').innerText = window.formatMoney(t); };
-    window.filtrarOrc = () => { const vRaw = document.getElementById('buscaOrc').value; const res = document.getElementById('resBuscaOrc'); res.innerHTML = ''; if(!vRaw) return; const f = window.normalizar(vRaw); window.pecas.forEach(p => { if(window.normalizar(p.nome + ' ' + p.aplicacao).includes(f)){ const d = document.createElement('div'); d.className = "p-3 border rounded-xl cursor-pointer bg-white hover:bg-blue-50 text-[11px] font-bold uppercase shadow-sm border-l-4 border-l-blue-400"; d.innerHTML = `<b>${p.nome}</b><br><span class="text-blue-600 text-[9px]">${p.aplicacao}</span>`; d.onclick = () => { const ja = window.itensCart.findIndex(it => it.id === p.id); if(ja > -1) window.itensCart[ja].qtdCart++; else window.itensCart.push({...p, qtdCart: 1}); window.renderItensOrc(); }; res.appendChild(d); } }); };
-    window.finalizarVenda = async () => { if(!document.getElementById('orc_cliente').value || window.itensCart.length === 0) return alert("Preencha cliente e peças!"); const orc = { cliente: document.getElementById('orc_cliente').value.toUpperCase(), veiculo: document.getElementById('orc_veiculo').value.toUpperCase(), cambio: document.getElementById('orc_cambio').value, endereco: document.getElementById('orc_endereco').value.toUpperCase(), operador: operadorAtual, itens: window.itensCart, total: document.getElementById('totalOrc').innerText, data: new Date().toLocaleDateString(), dataTimestamp: new Date().toISOString() }; await window.dbFunctions.salvarOrcamento(orc); window.hideModal('modalOrcamento'); window.abrirVisualizacaoDados(orc); };
-    window.abrirVisualizacaoDados = (id) => { 
-        const orc = typeof id === 'object' ? id : window.orcamentosHistorico.find(x => x.id === id);
-        if(!orc) return;
-        document.getElementById('viewDataOrc').innerText = orc.data; 
-        document.getElementById('viewCliente').innerText = orc.cliente; 
-        document.getElementById('viewEnderecoDoc').innerText = orc.endereco || 'RETIRADA'; 
-        document.getElementById('viewVeiculo').innerText = orc.veiculo; 
-        document.getElementById('viewPlaca').innerText = orc.placa || '---';
-        document.getElementById('viewTotalGeral').innerText = orc.total; 
-        const corpo = document.getElementById('viewCorpoTabela'); 
-        corpo.innerHTML = ''; 
-        orc.itens.forEach(it => { 
-            const tr = document.createElement('tr'); 
-            tr.innerHTML = `<td><div class="font-bold">${it.nome}</div><div class="text-[9px] uppercase">${it.aplicacao}</div></td><td class="text-center font-bold">${it.qtdCart}</td><td class="text-right font-bold">${it.valor}</td><td class="text-right font-black font-black">${window.formatMoney(window.parseMoney(it.valor) * it.qtdCart)}</td>`; 
-            corpo.appendChild(tr); 
-        }); 
-        window.showModal('modalVisualizarOrcamento'); 
-    };
-
-    // SUCATA FUNÇÕES
-    window.abrirSucata = () => { ["suc_fabricante", "suc_veiculo", "suc_anos", "suc_motor", "suc_cor"].forEach(id => document.getElementById(id).value = ''); document.getElementById('containerPeçasSucata').classList.add('hidden'); window.showModal('modalSucata'); };
-    window.gerarListaPeçasSucata = () => {
-        const vei = document.getElementById('suc_veiculo').value; if(!vei) return alert("Veículo!");
-        const container = document.getElementById('containerPeçasSucata'); const lista = document.getElementById('listaPeçasSucata');
-        container.classList.remove('hidden'); lista.innerHTML = '';
-        const templates = [{ cat: "Lataria", itens: ["CAPO", "PARALAMA DIR", "PARALAMA ESQ", "PARACHOQUE DIANT", "PARACHOQUE TRAS", "TAMPA TRAS", "TETO", "PORTA DIANT DIR", "PORTA DIANT ESQ", "PORTA TRAS DIR", "PORTA TRAS ESQ", "RETROVISOR DIR", "RETROVISOR ESQ"] }, { cat: "Mecânica", itens: ["MOTOR PARCIAL", "CAIXA DE CAMBIO", "ALTERNADOR", "ARRANQUE", "COMPRESSOR AR COND", "RADIADOR", "SETOR DE DIREÇÃO", "BICO INJETOR", "BOBINA", "EMBREAGEM COMPLETA", "CARTER"] }, { cat: "Interior/Vidros", itens: ["FAROL DIR", "FAROL ESQ", "LANTERNA DIR", "LANTERNA ESQ", "PARABRISA DIANT", "VIDRO TRASEIRO", "VIDRO DE PORTA", "BANCOS (JOGO)"] }];
-        templates.forEach(t => { const divCat = document.createElement('div'); divCat.innerHTML = `<h4 class="bg-slate-100 p-2 font-black text-[11px] uppercase mb-3 border-l-4 border-slate-900 text-slate-900">${t.cat}</h4><div class="sucata-grid grid grid-cols-2 md:grid-cols-4 gap-2"></div>`; const grid = divCat.querySelector('.sucata-grid'); t.itens.forEach(item => { const label = document.createElement('label'); label.className = "p-3 border rounded-xl flex items-center gap-2 bg-white text-xs cursor-pointer"; label.innerHTML = `<input type="checkbox" checked data-category="${t.cat}"> <span>${item}</span>`; grid.appendChild(label); }); lista.appendChild(divCat); });
-    };
-    window.finalizarEntradaSucata = async () => {
-        const f = document.getElementById('suc_fabricante').value.toUpperCase(); const v = document.getElementById('suc_veiculo').value.toUpperCase(); const a = document.getElementById('suc_anos').value; const m = document.getElementById('suc_motor').value.toUpperCase(); const c = document.getElementById('suc_cor').value.toUpperCase(); const cam = document.getElementById('suc_cambio').value.toUpperCase();
-        const sel = document.querySelectorAll('#listaPeçasSucata input:checked'); if(sel.length === 0) return alert("Selecione pelo menos uma peça!");
-        const regexLimpeza = /\b(DIR|ESQ|PAR|DIANT|TRAS|DIANTEIRO|TRASEIRO)\b/gi;
-        for(let check of sel) {
-            const nomePeca = check.nextElementSibling.innerText; const cat = check.getAttribute('data-category'); const app = `${f} ${v} ${a} ${m} ${cam}`;
-            let ladoDet = "N/D"; if (nomePeca.includes(" DIR")) ladoDet = "DIREITO"; else if (nomePeca.includes(" ESQ")) ladoDet = "ESQUERDO"; else if (nomePeca.includes(" PAR")) ladoDet = "O PAR";
-            let posDet = "N/D"; if (nomePeca.includes(" DIANT")) posDet = "DIANTEIRO"; else if (nomePeca.includes(" TRAS")) posDet = "TRASEIRO";
-            let nomeLimpo = nomePeca.replace(regexLimpeza, "").replace(/\s+/g, " ").trim();
-            const corFinal = (cat === "Lataria") ? c : "";
-            await window.dbFunctions.salvarPeca({ nome: nomeLimpo, aplicacao: app, lado: ladoDet, posicao: posDet, cor: corFinal, cambio: cam, estado: "USADO", valor: "R$ 0,00", qtd: 1, operadorUltimaMod: operadorAtual, origemSucata: true });
-        }
-        alert("Sucata cadastrada!"); window.hideModal('modalSucata');
-    };
-
-    // GESTÃO
-    window.abrirCadastro = () => { window.editandoId = null; ["nomePeca", "aplicacaoPeca", "valorPeca", "corPeca"].forEach(id => document.getElementById(id).value = ''); document.getElementById('qtdPeca').value = '1'; window.showModal('modalCadastro'); };
-    window.salvarFormPeca = async () => { const n = document.getElementById('nomePeca').value; const v = document.getElementById('valorPeca').value; if(!n || !v) return alert("Preencha Nome e Valor!"); await window.dbFunctions.salvarPeca({ nome: n.toUpperCase(), aplicacao: document.getElementById('aplicacaoPeca').value.toUpperCase(), lado: document.getElementById('lado').value, posicao: document.getElementById('posicao').value, cor: document.getElementById('corPeca').value.toUpperCase(), cambio: document.getElementById('cambioPeca').value, estado: document.getElementById('estado').value, valor: window.formatMoney(v), qtd: parseInt(document.getElementById('qtdPeca').value) || 0, operadorUltimaMod: operadorAtual }); window.hideModal('modalCadastro'); };
-    window.abrirEditar = (id) => { const p = window.pecas.find(x => x.id === id); window.editandoId = id; document.getElementById('nomePeca').value = p.nome; document.getElementById('aplicacaoPeca').value = p.aplicacao; document.getElementById('lado').value = p.lado || 'N/D'; document.getElementById('posicao').value = p.posicao || 'N/D'; document.getElementById('cambioPeca').value = p.cambio || 'N/D'; document.getElementById('corPeca').value = p.cor || ''; document.getElementById('estado').value = p.estado || 'NOVO'; document.getElementById('valorPeca').value = p.valor.replace('R$ ',''); document.getElementById('qtdPeca').value = p.qtd; window.showModal('modalCadastro'); };
-    window.abrirHistorico = () => { window.renderHistorico(); window.showModal('modalHistorico'); };
-    window.renderHistorico = () => { const l = document.getElementById('listaHist'); l.innerHTML = ''; window.orcamentosHistorico.forEach(o => { const d = document.createElement('div'); d.className = "p-4 border rounded-xl flex justify-between items-center bg-slate-50 mb-2 shadow-sm font-bold text-slate-900"; d.innerHTML = `<div>${o.cliente} - ${o.veiculo}</div><div class="flex gap-2"><b>${o.total}</b><button onclick="window.abrirVisualizacaoDados('${o.id}')" class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-bold">VER</button><button onclick="window.dbFunctions.excluirOrcamento('${o.id}')" class="text-red-400">✕</button></div>`; l.appendChild(d); }); };
-    window.copiarWPP = (i) => { const p = window.pecas[i]; const msg = `*ALAMPE PEÇAS*\n📦 *ITEM:* ${p.nome}\n🚗 *APLICAÇÃO:* ${p.aplicacao}\n🎨 *COR:* ${p.cor || '---'}\n💰 *VALOR:* ${p.valor}`; const el = document.createElement('textarea'); el.value = msg; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); alert("Copiado!"); };
-    window.limparEstoqueCompleto = async () => { if(!confirm("Zerar estoque cloud?")) return; for(const p of window.pecas) { await window.dbFunctions.excluirPeca(p.id); } alert("Limpo!"); };
-    window.importarCatalogoAlampe = async () => { if(!confirm("Importar base?")) return; const itens = [ { nome: "CAPO", aplicacao: "VW GOL G5 (2009-2012)", cor: "PRATA", lado: "N/D", posicao: "DIANTEIRO", estado: "NOVO", valor: "R$ 450,00", qtd: 3 } ]; for(const item of itens) { await window.dbFunctions.salvarPeca(item); } alert("Importado!"); };
-
-    // INICIALIZAÇÃO E LISTENERS
     function startListeners() {
-        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'pecas'), (snap) => {
-            window.pecas = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-            const badge = document.getElementById('totalPecasBadge');
-            if(badge) badge.innerText = window.pecas.length + " ITENS NO ESTOQUE";
-            window.render();
-        });
-        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'orcamentos'), (snap) => {
-            window.orcamentosHistorico = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-            window.orcamentosHistorico.sort((a, b) => new Date(b.dataTimestamp) - new Date(a.dataTimestamp));
-            if (!document.getElementById('modalHistorico').classList.contains('hidden')) window.renderHistorico();
-        });
-        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'chat'), (snap) => {
-            window.mensagensChat = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-            window.mensagensChat.sort((a, b) => new Date(a.dataISO) - new Date(b.dataISO));
-            const totalAgora = window.mensagensChat.length;
-            const chatPainel = document.getElementById('painelChat');
-            const isChatAberto = chatPainel?.classList.contains('aberto');
+        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'pecas'), (s) => { window.pecas = s.docs.map(d => ({ id: d.id, ...d.data() })); const b = document.getElementById('totalPecasBadge'); if(b) b.innerText = window.pecas.length + " ITENS NO ESTOQUE"; window.render(); });
+        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'orcamentos'), (s) => { window.orcamentosHistorico = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => new Date(b.dataTimestamp) - new Date(a.dataTimestamp)); const mh = document.getElementById('modalHistorico'); if (mh && !mh.classList.contains('hidden')) window.renderHistorico(); });
+        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'chat'), (s) => {
+            window.mensagensChat = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => new Date(a.dataISO) - new Date(b.dataISO));
             if (!initialChatLoad) {
-                snap.docChanges().forEach((change) => {
-                    if (change.type === "added") {
-                        const newMsg = change.doc.data();
-                        if (newMsg.remetente !== operadorAtual) {
-                            if (!isChatAberto) {
-                                const btnChat = document.getElementById('chatFloatingBtn');
-                                const badgeNotif = document.getElementById('chatNotifBadge');
-                                if (btnChat) btnChat.classList.add('animate-bounce');
-                                if (badgeNotif) {
-                                    badgeNotif.classList.remove('hidden');
-                                    const pendentes = totalAgora - window.totalMsgsAnterior;
-                                    badgeNotif.innerText = pendentes > 9 ? '9+' : pendentes;
-                                }
-                            }
-                            if (Notification.permission === "granted" && (document.hidden || !isChatAberto)) {
-                                new Notification("Alampe ERP - Chat", { body: `${newMsg.remetente}: ${newMsg.texto}`, icon: "logo.png" });
+                s.docChanges().forEach((c) => {
+                    if (c.type === "added") {
+                        const m = c.doc.data();
+                        if (m.remetente !== operadorAtual) {
+                            const cp = document.getElementById('painelChat');
+                            if (cp && !cp.classList.contains('aberto')) {
+                                const bt = document.getElementById('chatFloatingBtn'); if(bt) bt.classList.add('animate-bounce');
+                                const bn = document.getElementById('chatNotifBadge'); if(bn){ bn.classList.remove('hidden'); bn.innerText = window.mensagensChat.length - window.totalMsgsAnterior; }
+                                if (Notification.permission === "granted" || document.hidden) new Notification("Alampe Chat", { body: `${m.remetente}: ${m.texto}`, icon: "logo.png" });
                             }
                         }
                     }
                 });
-            } else {
-                window.totalMsgsAnterior = totalAgora;
-                initialChatLoad = false;
-            }
+            } else { window.totalMsgsAnterior = window.mensagensChat.length; initialChatLoad = false; }
             window.renderChat();
         });
     }
 
     async function initSystem() {
-        try {
-            await signInAnonymously(auth);
-            startListeners();
-            setInterval(async () => {
-                try {
-                    const response = await fetch(window.location.href, { method: 'HEAD' });
-                    const lastMod = response.headers.get('last-modified');
-                    if (localStorage.getItem('last_update') && localStorage.getItem('last_update') !== lastMod) {
-                        document.getElementById('updateBanner').style.display = 'block';
-                    }
-                    localStorage.setItem('last_update', lastMod);
-                } catch(e) {}
-            }, 30000);
-        } catch (e) { console.error(e); }
+        try { await signInAnonymously(auth); startListeners(); setInterval(async () => { try { const r = await fetch(window.location.href, { method: 'HEAD' }); const lm = r.headers.get('last-modified'); const ub = document.getElementById('updateBanner'); if (localStorage.getItem('last_update') && localStorage.getItem('last_update') !== lm && ub) ub.classList.remove('hidden'); localStorage.setItem('last_update', lm); } catch(e) {} }, 30000); } catch (e) { console.error(e); }
     }
 
-    // ATALHOS DE TECLADO (ESC E ENTER)
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            // Fecha Modais
-            ['modalVisualizarOrcamento', 'modalCadastro', 'modalHistorico', 'modalSucata', 'modalOrcamento'].forEach(mId => {
-                const m = document.getElementById(mId);
-                if (m && !m.classList.contains('hidden')) window.hideModal(mId);
-            });
-            // Fecha Estoque Completo (Results Area)
-            const resultsArea = document.getElementById('resultsArea');
-            if (resultsArea && !resultsArea.classList.contains('hidden')) {
-                document.getElementById('busca').value = '';
-                window.mostrandoCatalogo = false;
-                window.render();
-            }
-            // Fecha Chat
-            const chat = document.getElementById('painelChat');
-            if (chat && chat.classList.contains('aberto')) window.toggleChat();
+            ['modalVisualizarOrcamento', 'modalCadastro', 'modalHistorico', 'modalSucata', 'modalOrcamento'].forEach(m => window.hideModal(m));
+            const ra = document.getElementById('resultsArea'); if (ra && !ra.classList.contains('hidden')) { document.getElementById('busca').value = ''; window.mostrandoCatalogo = false; window.render(); }
+            const cp = document.getElementById('painelChat'); if(cp?.classList.contains('aberto')) window.toggleChat();
         }
         if (e.key === 'Enter') {
-            const loginScreen = document.getElementById('loginScreen');
-            if (loginScreen.style.display !== 'none') { window.confirmarLogin(); return; }
-            const mCad = document.getElementById('modalCadastro');
-            if (mCad && !mCad.classList.contains('hidden')) { window.salvarFormPeca(); return; }
-            const mOrc = document.getElementById('modalOrcamento');
-            if (mOrc && !mOrc.classList.contains('hidden')) { if (document.activeElement.id !== 'buscaOrc') window.finalizarVenda(); return; }
-            const mSuc = document.getElementById('modalSucata');
-            if (mSuc && !mSuc.classList.contains('hidden')) {
-                const containerPecas = document.getElementById('containerPeçasSucata');
-                if (containerPecas.classList.contains('hidden')) window.gerarListaPeçasSucata();
-                else window.finalizarEntradaSucata();
-                return;
-            }
+            if (document.getElementById('loginScreen').style.display !== 'none') { window.confirmarLogin(); return; }
+            if (document.activeElement.id === 'buscaGoogle') { window.consultarGoogle(); return; }
+            const mc = document.getElementById('modalCadastro'); if (mc && !mc.classList.contains('hidden')) { window.salvarFormPeca(); return; }
+            const mo = document.getElementById('modalOrcamento'); if (mo && !mo.classList.contains('hidden') && document.activeElement.id !== 'buscaOrc') { window.finalizarVenda(); return; }
+            const ms = document.getElementById('modalSucata'); if (ms && !ms.classList.contains('hidden')) { const c = document.getElementById('containerPeçasSucata'); if (c?.classList.contains('hidden')) window.gerarListaPeçasSucata(); else window.finalizarEntradaSucata(); }
         }
     });
 
-    if (operadorAtual) { 
-        document.getElementById('loginScreen').style.display = "none"; 
-        document.getElementById('appScreen').style.display = "block"; 
-        initSystem();
-        setTimeout(() => { document.getElementById('nomeVendedorDisplay').innerText = "VENDEDOR(A): " + operadorAtual; }, 1000);
-    } else {
-        document.getElementById('loginScreen').style.display = "flex";
-        initSystem();
-    }
+    if (operadorAtual) { document.getElementById('loginScreen').style.display = "none"; document.getElementById('appScreen').style.display = "block"; initSystem(); setTimeout(() => { const d = document.getElementById('nomeVendedorDisplay'); if(d) d.innerText = "VENDEDOR(A): " + operadorAtual; }, 1000); } else { document.getElementById('loginScreen').style.display = "flex"; initSystem(); }
 </script>
 </body>
 </html>
